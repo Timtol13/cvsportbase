@@ -1,10 +1,9 @@
 import React from 'react'
+import {useParams} from "react-router";
 
-type AdvanceProps ={
-    role: string
-}
 
-export const Advance: React.FC<AdvanceProps> = ({role}) => {
+export const Advance = () => {
+    const {role} = useParams()
     return (
         <div>
             {role}
