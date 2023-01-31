@@ -1,11 +1,11 @@
 import React from 'react';
-import {BrowserRouter as Router, Route, Link, Switch} from 'react-router-dom';
+import {BrowserRouter, Route, Link, Router} from 'react-router-dom';
 import {Registration} from './registration/registration'
 import {Login} from './registration/Login'
 
 export const Header = () => {
     return (
-        <Router>
+        <BrowserRouter>
             <header>
                 <nav>
                     <ul>
@@ -19,15 +19,9 @@ export const Header = () => {
                 </nav>
             </header>
             <main>
-                <Switch>
-                    <Route path=''>
-                        <Login />
-                    </Route>
-                    <Route path='/registration'>
-                        <Registration />
-                    </Route>
-                </Switch>
+                <Route path='/' element={<Login />}/>
+                <Route path='/registration' element={<Registration />}/>
             </main>
-        </Router>
+        </BrowserRouter>
     )
 }
