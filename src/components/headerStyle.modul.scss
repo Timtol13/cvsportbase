@@ -1,12 +1,19 @@
 ul {
+  position: fixed;
+  z-index: 5;
+  width: 100%;
+  backdrop-filter: blur(5px);
+  margin-top: 0;
+  height: 60px;
   display: flex;
   list-style-type: none;
   text-align: center;
   li {
+    margin-top: 15px;
     flex: 1 1 0;
     a {
       text-decoration: none;
-      color: #000;
+      color: #fff;
     }
   }
 }
