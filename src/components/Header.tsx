@@ -1,16 +1,18 @@
 import React from 'react';
-import {BrowserRouter, Route, Link, Router} from 'react-router-dom';
+import {BrowserRouter, Route, Link, Routes} from 'react-router-dom';
 import {Registration} from './registration/registration'
 import {Login} from './registration/Login'
+import {Main} from './Main/Main'
+import './headerStyle.modul.scss'
 
 export const Header = () => {
     return (
-        <BrowserRouter>
+        <div>
             <header>
                 <nav>
                     <ul>
                         <li>
-                            <Link to="/main">Главная</Link>
+                            <Link to="/">Главная</Link>
                         </li>
                         <li>
                             <Link to="/profile">Мой профиль</Link>
@@ -19,9 +21,12 @@ export const Header = () => {
                 </nav>
             </header>
             <main>
-                <Route path='/' element={<Login />}/>
-                <Route path='/registration' element={<Registration />}/>
+                <Routes>
+                    <Route path='/' element={<Main />}/>
+                    <Route path='/login' element={<Login />}/>
+                    <Route path='/registration' element={<Registration />}/>
+                </Routes>
             </main>
-        </BrowserRouter>
+        </div>
     )
 }

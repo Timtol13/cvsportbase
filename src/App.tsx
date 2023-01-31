@@ -1,9 +1,8 @@
 import React from 'react';
 import './App.css';
-import {Registration} from './components/registration/registration'
 import {Header} from './components/Header'
 
-function App() {
+export const App = () => {
   return (
     <div>
         <Header />
@@ -11,4 +10,3 @@ function App() {
   );
 }
 
-export default App;

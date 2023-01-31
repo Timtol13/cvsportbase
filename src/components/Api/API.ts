@@ -1,9 +1,3 @@
-import axios from 'axios'
-
-const instance = axios.create({
-    baseURL: 'http://127.0.0.1:8000/api/',
-})
-
 export const registrationApi = {
     postRegistration(data: { username: string; email: string; password: string } ) {
         return fetch(`http://127.0.0.1:8000/api/registration/`, {
