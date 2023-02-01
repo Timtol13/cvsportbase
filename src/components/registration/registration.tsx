@@ -10,8 +10,8 @@ export const Registration = () => {
     let nav = useNavigate()
     const [password, setPassword] = useState('')
     return (
-        <form>
-            <div>
+        <div className={'cont'}>
+            <div className={'form'}>
                 <input placeholder={'Введите логин'} id={'username'} onChange={e => setUsername(e.target.value)} />
                 <input placeholder={'Введите e-mail'} id={'email'} onChange={e => setEmail(e.target.value)} />
                 <input placeholder={'Введите пароль'} id={'password'} onChange={e => setPassword(e.target.value)} />
@@ -30,6 +30,6 @@ export const Registration = () => {
                 }
                 }>Зарегистрирвоаться</button>
             </div>
-        </form>
+        </div>
     )
 }
