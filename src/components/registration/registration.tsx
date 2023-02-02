@@ -16,6 +16,7 @@ export const Registration = () => {
                 <input placeholder={'Введите e-mail'} id={'email'} onChange={e => setEmail(e.target.value)} />
                 <input placeholder={'Введите пароль'} id={'password'} onChange={e => setPassword(e.target.value)} />
                 <select id={'role'} onChange={e => setRoleA(e.target.value)}>
+                    <option>Выберите роль</option>
                     <option value={'Player'}>Игрок</option>
                     <option value={'Agent'}>Агент</option>
                     <option value={'Trainer'}>Тренер</option>
@@ -26,7 +27,10 @@ export const Registration = () => {
                 <button onClick={() => {
                     const data = {username, email, password}
                     console.log(roleA)
-                    registrationApi.postRegistration(data).then(() => {return nav(`/advance/${roleA}`)})
+                    registrationApi.postRegistration(data).then(e => {
+                        console.log()
+                        return nav(`/advance/${roleA}`)
+                    })
                 }
                 }>Зарегистрирвоаться</button>
             </div>
