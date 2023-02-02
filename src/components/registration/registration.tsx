@@ -1,9 +1,11 @@
 import React, {useState} from 'react'
-import {registrationApi, getUsers} from "../Api/API"
 import {useNavigate} from "react-router";
 import './Registration.modul.scss'
+import {registrationTC} from "../../store/bll/authReducer";
+import {useAppDispatch} from "../../hooks/hooks";
 
 export const Registration = () => {
+    const dispatch = useAppDispatch()
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [roleA, setRoleA] = useState('')
@@ -26,11 +28,8 @@ export const Registration = () => {
                 </select>
                 <button onClick={() => {
                     const data = {username, email, password}
-                    console.log(roleA)
-                    registrationApi.postRegistration(data).then(e => {
-                        console.log()
-                        return nav(`/advance/${roleA}`)
-                    })
+                    dispatch(registrationTC(data))
+                    return nav(`/advance/${roleA}`)
                 }
                 }>Зарегистрирвоаться</button>
             </div>
