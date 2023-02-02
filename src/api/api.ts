@@ -1,4 +1,5 @@
 import axios from "axios";
+import {AdvanceFormType, RegistrationFormType} from "./RequestType";
 
 const instance = axios.create({
     baseURL: 'http://127.0.0.1:8000/api/',
@@ -6,21 +7,10 @@ const instance = axios.create({
 
 export const authAPI = {
     registration(data: RegistrationFormType) {
-        return instance.post(`registration/`, data)
+        return instance.post<RegistrationFormType>(`registration/`, data)
     },
-    login(data: any) {
-        return instance.post<any>('user/login', data)
-    },
-    getMe(params: any) {
-        return instance.get<any>('user', { params })
-    },
-    updateMe(data: any) {
-        return instance.put<any>('user/update', { data })
+    advance(role: string, data: AdvanceFormType) {
+        return instance.post<AdvanceFormType>(`advance/${role}`, data)
     },
 }
 
-export type RegistrationFormType = {
-    username: string,
-    email: string,
-    password: string
-}

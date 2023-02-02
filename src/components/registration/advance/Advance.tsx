@@ -9,7 +9,7 @@ export const Advance = () => {
     const form = () => {
         switch (role) {
             case 'Player':
-                return <Player/>
+                return <Player />
         }
     }
     return (
