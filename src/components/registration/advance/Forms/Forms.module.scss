@@ -3,10 +3,12 @@ form {
   margin-left: auto;
   margin-top: 70px;
   margin-right: auto;
+  height: 400px;
   background-color: rgba(255, 255, 255, 0.1);
   .inputs {
     margin-left: auto;
     margin-right: 80px;
+    margin-top: 40px;
     max-width: 650px;
     height: 100px;
     color: #fff;
@@ -22,10 +24,21 @@ form {
       border-radius: 10px;
       text-indent: 8px;
     }
+    i{
+      margin-left: 0;
+      margin-right: auto;
+    }
     .checkbox {
       background-color: #000;
       width: 20px;
       border-radius: 5px;
+    }
+    button {
+      margin: 8px;
+      width: 40%;
+      height: 45px;
+      background-color: #26C75B;
+      color: #fff;
     }
   }
   .input-file {
@@ -72,4 +85,5 @@ form {
       width: 0;
       height: 0;
     }
+
   }
