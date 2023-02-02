@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter, Route, Link, Routes, RouteMatch} from 'react-router-dom';
+import {Route, Link, Routes} from 'react-router-dom';
 import {Registration} from './registration/registration'
 import {Login} from './registration/Login'
 import {Main} from './Main/Main'
@@ -18,6 +18,9 @@ export const Header = () => {
                         </li>
                         <li>
                             <Link to="/profile">Мой профиль</Link>
+                        </li>
+                        <li>
+                            <Link to="/registration">Регистрация</Link>
                         </li>
                     </ul>
                 </nav>

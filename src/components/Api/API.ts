@@ -1,3 +1,4 @@
+
 export const registrationApi = {
     postRegistration(data: { username: string; email: string; password: string } ) {
         return fetch(`http://127.0.0.1:8000/api/registration/`, {
@@ -19,3 +20,6 @@ export const getUsers = () =>{
         },
     }).then(resp => resp.json())
 }
+
+
+
