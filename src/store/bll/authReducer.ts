@@ -5,16 +5,16 @@ import { handleError } from '../../utils/handleError'
 
 import { setAppStatus } from './appReducer'
 
-import {authAPI, RegistrationFormType} from '../../api/api'
+import {authAPI} from '../../api/api'
+import {AdvanceFormType, RegistrationFormType} from "../../api/RequestType";
 
 //THUNKS
-export const login = createAsyncThunk(
-  'login',
-  async (data: { email: string; password: string }, { dispatch }) => {
+export const registrationTC = createAsyncThunk(
+  'registration',
+  async (data: RegistrationFormType, { dispatch }) => {
     dispatch(setAppStatus(requestStatus.LOADING))
     try {
-      const res = await authAPI.login(data)
-
+      const res = await authAPI.registration(data)
       dispatch(setMe(res.data))
       dispatch(changeLoggedIn(true))
       dispatch(setAppStatus(requestStatus.SUCCEEDED))
@@ -24,14 +24,13 @@ export const login = createAsyncThunk(
     }
   }
 )
-export const registrationTC = createAsyncThunk(
-  'registration',
-  async (data: RegistrationFormType, { dispatch }) => {
+export const advanceTC = createAsyncThunk(
+  'advance',
+  async (params: {role:string, data: AdvanceFormType}, { dispatch }) => {
     dispatch(setAppStatus(requestStatus.LOADING))
     try {
-      const res = await authAPI.registration(data)
-      dispatch(setMe(res.data))
-      dispatch(changeLoggedIn(true))
+      const res = await authAPI.advance(params.role, params.data)
+
       dispatch(setAppStatus(requestStatus.SUCCEEDED))
     } catch (err) {
       handleError(err, dispatch)
