@@ -21,5 +21,18 @@ export const getUsers = () =>{
     }).then(resp => resp.json())
 }
 
+export const RoleRegistration = {
+    postAdvanced(data: { role: string } )
+    {
+        return fetch(`http://127.0.0.1:8000/api/advanced/${data.role}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({})
+        })
+    }
+}
+
 
 
