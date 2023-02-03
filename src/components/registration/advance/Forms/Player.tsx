@@ -8,7 +8,7 @@ export const Player = () => {
     const dispatch = useAppDispatch()
     //
     const [leg, setLeg] =  useState('')
-    let position = [""]
+    const [position, setPosition] = useState([""])
     //
     const formik = useFormik({
         initialValues: {
@@ -54,7 +54,7 @@ export const Player = () => {
                     <option value={'L'}>Левая</option>
                     <option value={'B'}>Обе</option>
                 </select>
-                <select onChange={e => position.push(e.target.value)}>
+                <select multiple onChange={e => setPosition([e.target.value])}>
                     <option value={"1"}>Вратарь</option>
                     <option value={"2"}>Центральный защитник</option>
                     <option value={"3"}>Левый защитник</option>
