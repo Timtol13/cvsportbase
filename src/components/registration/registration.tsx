@@ -7,15 +7,16 @@ import {useFormik} from "formik";
 
 export const Registration = () => {
     const dispatch = useAppDispatch()
+    const [role, SetRole] = useState('')
     const formik = useFormik({
         initialValues: {
-            login: '',
+            username: '',
             email: '',
-            password: ''
+            password: '',
         },
 
-        onSubmit: () => {
-            dispatch(registrationTC({email: "", password: "", username: ""}))
+        onSubmit: values => {
+            dispatch(registrationTC({...values, role}))
             return nav(`/advance/${roleA}`)
         },
     })
@@ -26,17 +27,17 @@ export const Registration = () => {
             <div className={'cont'}>
                 <div className={'form'}>
                     <div className={'inputs'}>
-                        <input placeholder={'Введите логин'} {...formik.getFieldProps('login')} />
+                        <input placeholder={'Введите логин'} {...formik.getFieldProps('username')} />
                         <input placeholder={'Введите e-mail'} {...formik.getFieldProps('email')} />
                         <input type={'password'} placeholder={'Введите пароль'} {...formik.getFieldProps('password')} />
-                        <select id={'role'} onChange={e => {roleA=e.target.value}}>
+                        <select id={'role'} onChange={e => {SetRole(e.target.value)}}>
                             <option>Выберите роль</option>
-                            <option>Игрок</option>
-                            <option>Агент</option>
-                            <option>Тренер</option>
-                            <option>Родитель</option>
-                            <option>Клуб</option>
-                            <option>Скаут</option>
+                            <option value={'Player'}>Игрок</option>
+                            <option value={'Agent'}>Агент</option>
+                            <option value={'Trainer'}>Тренер</option>
+                            <option value={'Parent'}>Родитель</option>
+                            <option value={'Club'}>Клуб</option>
+                            <option value={'Scout'}>Скаут</option>
                         </select>
                         <button type="submit">Зарегистрирвоаться</button>
                         <h5>Уже есть аккаунт? <a href={'/login'}>Войдите</a></h5>

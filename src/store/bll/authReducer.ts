@@ -14,6 +14,7 @@ export const registrationTC = createAsyncThunk(
   async (data: RegistrationFormType, { dispatch }) => {
     dispatch(setAppStatus(requestStatus.LOADING))
     try {
+        console.log(data)
       const res = await authAPI.registration(data)
       dispatch(setMe(res.data))
       dispatch(changeLoggedIn(true))

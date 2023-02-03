@@ -2,6 +2,7 @@ export type RegistrationFormType = {
     username: string,
     email: string,
     password: string
+    role: string
 }
 export type AdvanceFormType = {
     first_name: string,
@@ -13,6 +14,7 @@ export type AdvanceFormType = {
     city: string,
     photo: string,
     user: string
+    is_show: boolean,
     leg?: string,
     position?: string,
     age?: string,
@@ -20,7 +22,6 @@ export type AdvanceFormType = {
     weight?: string,
     shengen?: boolean,
     description?: string,
-    is_show?: boolean,
     players?: string[],
     country_s?: string,
     city_s?: string,
