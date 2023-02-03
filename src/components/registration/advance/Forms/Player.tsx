@@ -15,7 +15,7 @@ export const Player = () => {
             age: '',
             first_name: '',
             second_name: '',
-            patronimyc: '',
+            patronymic: '',
             height: '',
             weight: '',
             phone: '',

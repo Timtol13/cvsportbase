@@ -7,7 +7,7 @@ export type RegistrationFormType = {
 export type AdvanceFormType = {
     first_name: string,
     second_name: string,
-    patronimyc: string,
+    patronymic: string,
     phone: string,
     email: string,
     country: string,
