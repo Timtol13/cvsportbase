@@ -1,5 +1,9 @@
 body{
-
     background: center url('/media/background.jfif');
     background-size: auto;
+}
+button{
+    border: #fff 1px solid;
+    border-radius: 10px;
+    background-color: green;
 }

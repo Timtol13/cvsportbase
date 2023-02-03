@@ -1,42 +1,54 @@
 import React from 'react'
 import styles from './Forms.module.scss'
+import {useAppDispatch} from "../../../../hooks/hooks";
+import {advanceTC} from "../../../../store/bll/authReducer";
+import {useFormik} from "formik";
 
 export const Player = () => {
-    return (
-        <form>
-            <label className="input-file">
-                <input type="file" />
-                    <span>Выберите файл</span>
-            </label>
-            <div className={styles.inputs}>
-                <input id={'first_name'} placeholder={'Имя'}/>
-                <input id={'second_name'} placeholder={'Фамилия'}/>
-                <input id={'patronymic'} placeholder={'Отчество'}/>
-                <input id={'age'} placeholder={'Возраст'}/>
-                <input id={'height'} placeholder={'Рост'} />
-                <input id={'weight'} placeholder={'Вес'} />
-                <input id={'phone'} type={'phone'} placeholder={'Номер телефона'} />
-                <input id={'email'} type={'email'} placeholder={'E-mail'} />
-                <input id={'country'} placeholder={'Страна'} />
-                <input id={'city'} placeholder={'Город'} />
-                <textarea id={'description'} placeholder={'Напишите о себе'} />
-                <input id={'is_active'} className={styles.checkbox} type={'checkbox'} checked /><i>Отображать всем</i>
-                <input id={'shengen'} className={styles.checkbox} type={'checkbox'} /><i>Шенген</i>
-            </div>
+    const dispatch = useAppDispatch()
 
-        <form onSubmit={formik.handleSubmit}>
-            <input {...formik.getFieldProps('first_name')}/>
-            <input {...formik.getFieldProps('second_name')}/>
-            <input {...formik.getFieldProps('patronymic')}/>
-            <input {...formik.getFieldProps('age')}/>
-            <input {...formik.getFieldProps('height')}/>
-            <input {...formik.getFieldProps('weight')}/>
-            <input {...formik.getFieldProps('phone')}/>
-            <input {...formik.getFieldProps('email')}/>
-            <input {...formik.getFieldProps('country')}/>
-            <input {...formik.getFieldProps('city')}/>
-            <input {...formik.getFieldProps('shengen')}/>
-            <button type="submit">Добавить</button>
+    const formik = useFormik({
+        initialValues: {
+            leg: '',
+            position: '',
+            age: '',
+            first_name: '',
+            second_name: '',
+            patronimyc: '',
+            height: '',
+            weight: '',
+            phone: '',
+            email: '',
+            country: '',
+            shengen: false,
+            city: '',
+            description: '',
+            is_show: false,
+            photo: '',
+            user: ''
+        },
+
+        onSubmit: values => {
+            dispatch(advanceTC({role: 'Player', data: values}))
+        },
+    })
+
+    return (
+        <form onSubmit={formik.handleSubmit} className={styles.form}>
+            <div className={styles.inputs}>
+                <input {...formik.getFieldProps('first_name')} placeholder={'Имя'} />
+                <input {...formik.getFieldProps('second_name')} placeholder={'Фамилия'} />
+                <input {...formik.getFieldProps('patronymic')} placeholder={'Отчество'} />
+                <input {...formik.getFieldProps('age')} placeholder={'Возраст'} />
+                <input {...formik.getFieldProps('height')} placeholder={'Рост'} />
+                <input {...formik.getFieldProps('weight')} placeholder={'Вес'} />
+                <input {...formik.getFieldProps('phone')} placeholder={'Телефон'} />
+                <input {...formik.getFieldProps('email')} placeholder={'E-mail'} />
+                <input {...formik.getFieldProps('country')} placeholder={'Страна'} />
+                <input {...formik.getFieldProps('city')} placeholder={'Город'} />
+                <input {...formik.getFieldProps('shengen')} className={styles.checkbox} type={'checkbox'} /> <i>Наличие шенгена</i>
+                <button type="submit">Добавить</button>
+            </div>
         </form>
     )
 }
