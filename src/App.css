@@ -1,6 +1,6 @@
 body{
-    /*background: center url('/media/background.jfif');
-    background-size: auto;*/
+    background: center url('/src/media/background.jfif');
+    background-size: auto;
 }
 button{
     border: #fff 1px solid;
