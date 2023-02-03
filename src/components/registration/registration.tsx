@@ -14,35 +14,35 @@ export const Registration = () => {
             password: ''
         },
 
-        onSubmit: values => {
+        onSubmit: () => {
             dispatch(registrationTC({email: "", password: "", username: ""}))
+            return nav(`/advance/${roleA}`)
         },
     })
     let nav = useNavigate()
     let roleA = ''
     return (
-        <div className={'cont'}>
-            <div className={'form'}>
-                <div className={'inputs'}>
-                    <input placeholder={'Введите логин'} {...formik.getFieldProps('login')} />
-                    <input placeholder={'Введите e-mail'} {...formik.getFieldProps('email')} />
-                    <input type={'password'} placeholder={'Введите пароль'} {...formik.getFieldProps('password')} />
-                    <select id={'role'} onChange={e => {roleA=e.target.value}}>
-                        <option>Выберите роль</option>
-                        <option>Игрок</option>
-                        <option>Агент</option>
-                        <option>Тренер</option>
-                        <option>Родитель</option>
-                        <option>Клуб</option>
-                        <option>Скаут</option>
-                    </select>
-                    <button type={"submit"} onClick={() => {
-                        return nav(`/advance/${roleA}`)
-                    }
-                    }>Зарегистрирвоаться</button>
-                    <h5>Уже есть аккаунт? <a href={'/login'}>Войдите</a></h5>
+        <form onSubmit={formik.handleSubmit}>
+            <div className={'cont'}>
+                <div className={'form'}>
+                    <div className={'inputs'}>
+                        <input placeholder={'Введите логин'} {...formik.getFieldProps('login')} />
+                        <input placeholder={'Введите e-mail'} {...formik.getFieldProps('email')} />
+                        <input type={'password'} placeholder={'Введите пароль'} {...formik.getFieldProps('password')} />
+                        <select id={'role'} onChange={e => {roleA=e.target.value}}>
+                            <option>Выберите роль</option>
+                            <option>Игрок</option>
+                            <option>Агент</option>
+                            <option>Тренер</option>
+                            <option>Родитель</option>
+                            <option>Клуб</option>
+                            <option>Скаут</option>
+                        </select>
+                        <button type="submit">Зарегистрирвоаться</button>
+                        <h5>Уже есть аккаунт? <a href={'/login'}>Войдите</a></h5>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     )
 }
