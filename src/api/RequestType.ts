@@ -16,7 +16,7 @@ export type AdvanceFormType = {
     user: string
     is_show: boolean,
     leg?: string,
-    position?: string,
+    position?: any,
     age?: string,
     height?: string,
     weight?: string,

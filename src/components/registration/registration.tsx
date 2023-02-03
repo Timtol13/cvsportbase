@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import {useNavigate} from "react-router";
 import './Registration.modul.scss'
-import {advanceTC, registrationTC} from "../../store/bll/authReducer";
+import {registrationTC} from "../../store/bll/authReducer";
 import {useAppDispatch} from "../../hooks/hooks";
 import {useFormik} from "formik";
 
@@ -17,7 +17,7 @@ export const Registration = () => {
 
         onSubmit: values => {
             dispatch(registrationTC({...values, role}))
-            return nav(`/advance/${roleA}`)
+            return nav(`/advance/${role}`)
         },
     })
     let nav = useNavigate()
