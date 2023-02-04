@@ -3,9 +3,11 @@ import styles from './Forms.module.scss'
 import {useAppDispatch} from "../../../../hooks/hooks";
 import {advanceTC} from "../../../../store/bll/authReducer";
 import {useFormik} from "formik";
+import {useNavigate} from "react-router";
 
 export const Player = () => {
     const dispatch = useAppDispatch()
+    const nav = useNavigate()
     //
     const [leg, setLeg] =  useState('')
     const [position, setPosition] = useState([""])
@@ -32,12 +34,16 @@ export const Player = () => {
         onSubmit: values => {
             console.log(position)
             dispatch(advanceTC({role: 'Player', data: {...values, leg, position}}))
-
+            return nav(`/profile/Player/${values.first_name}/${values.second_name}/${values.patronymic}`)
         },
     })
 
     return (
         <form onSubmit={formik.handleSubmit} className={styles.form}>
+            <label className={styles.input_file}>
+                <span>+</span>
+                <input {...formik.getFieldProps('photo')} type={'file'} className={styles.files} />
+            </label>
             <div className={styles.inputs}>
                 <input {...formik.getFieldProps('first_name')} placeholder={'Имя'} />
                 <input {...formik.getFieldProps('second_name')} placeholder={'Фамилия'} />
@@ -54,7 +60,7 @@ export const Player = () => {
                     <option value={'L'}>Левая</option>
                     <option value={'B'}>Обе</option>
                 </select>
-                <select multiple onChange={e => setPosition([e.target.value])}>
+                <select onChange={e => setPosition([e.target.value])}>
                     <option value={"1"}>Вратарь</option>
                     <option value={"2"}>Центральный защитник</option>
                     <option value={"3"}>Левый защитник</option>
@@ -68,7 +74,9 @@ export const Player = () => {
                     <option value={"11"}>Левый вингер</option>
                     <option value={"12"}>Инсайдер</option>
                 </select>
+                <textarea {...formik.getFieldProps('description')} placeholder={"Расскажите о себе"}/>
                 <input {...formik.getFieldProps('shengen')} className={styles.checkbox} type={'checkbox'} /> <i>Наличие шенгена</i>
+                <input {...formik.getFieldProps('is_show')} className={styles.checkbox} type={'checkbox'} /> <i>Отображать всем</i>
                 <button type="submit">Добавить</button>
             </div>
         </form>

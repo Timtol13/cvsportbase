@@ -6,10 +6,6 @@ import {advanceTC} from "../../../../store/bll/authReducer";
 
 export const Agent = () => {
     const dispatch = useAppDispatch()
-    //
-    const [leg, setLeg] =  useState('')
-    const [position, setPosition] = useState([""])
-    //
     const formik = useFormik({
         initialValues: {
             age: '',
@@ -26,7 +22,6 @@ export const Agent = () => {
         },
 
         onSubmit: values => {
-            console.log(position)
             dispatch(advanceTC({role: 'Agent', data: values}))
 
         },
@@ -34,6 +29,10 @@ export const Agent = () => {
 
     return (
         <form onSubmit={formik.handleSubmit} className={styles.form}>
+            <label className={styles.input_file}>
+                <span>+</span>
+                <input {...formik.getFieldProps('photo')} type={'file'} className={styles.files} />
+            </label>
             <div className={styles.inputs}>
                 <input {...formik.getFieldProps('first_name')} placeholder={'Имя'} />
                 <input {...formik.getFieldProps('second_name')} placeholder={'Фамилия'} />
@@ -43,7 +42,10 @@ export const Agent = () => {
                 <input {...formik.getFieldProps('email')} placeholder={'E-mail'} />
                 <input {...formik.getFieldProps('country')} placeholder={'Страна'} />
                 <input {...formik.getFieldProps('city')} placeholder={'Город'} />
-                <input {...formik.getFieldProps('is_show')} checked type={'checkbox'} />Показывать другим
+                <label>
+                    <input {...formik.getFieldProps('is_show')} type={'checkbox'} />
+                    Показывать всем
+                </label>
                 <button type="submit">Добавить</button>
             </div>
         </form>

@@ -1,11 +1,11 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 
-import { requestStatus } from '../../enums/requestStatus'
-import { handleError } from '../../utils/handleError'
+import {requestStatus} from '../../enums/requestStatus'
+import {handleError} from '../../utils/handleError'
 
-import { setAppStatus } from './appReducer'
+import {setAppStatus} from './appReducer'
 
-import {authAPI} from '../../api/api'
+import {authAPI, getAPI} from '../../api/api'
 import {AdvanceFormType, RegistrationFormType} from "../../api/RequestType";
 
 //THUNKS
@@ -24,6 +24,19 @@ export const registrationTC = createAsyncThunk(
       dispatch(setAppStatus(requestStatus.FAILED))
     }
   }
+)
+export const getRoleTC = createAsyncThunk(
+    'getRole',
+    async(data: {role: string, first_name: string, second_name: string, patronymic: string}, {dispatch}) =>{
+        dispatch(setAppStatus(requestStatus.LOADING))
+        try {
+            const res = await getAPI.getRole(data.role, data.first_name, data.second_name, data.patronymic)
+            dispatch(setAppStatus(requestStatus.SUCCEEDED))
+        }catch(err){
+            handleError(err, dispatch)
+            dispatch(setAppStatus(requestStatus.FAILED))
+        }
+    }
 )
 export const advanceTC = createAsyncThunk(
   'advance',

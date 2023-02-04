@@ -21,7 +21,6 @@ export const Registration = () => {
         },
     })
     let nav = useNavigate()
-    let roleA = ''
     return (
         <form onSubmit={formik.handleSubmit}>
             <div className={'cont'}>

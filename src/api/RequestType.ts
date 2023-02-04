@@ -1,3 +1,5 @@
+import * as string_decoder from "string_decoder";
+
 export type RegistrationFormType = {
     username: string,
     email: string,
@@ -32,4 +34,9 @@ export type AdvanceFormType = {
     schools?: string[],
     school_ages?: string,
     school?: string,
+}
+
+export type VideoType = {
+    file: string,
+    player?: AdvanceFormType
 }
