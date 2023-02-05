@@ -5,10 +5,11 @@ import {VideoType} from '../../api/RequestType'
 
 export const Main = () => {
     const [videos, setVideos] = useState<VideoType>()
-    getAPI.getVideos().then(e => setVideos(e.data[3]))
+    getAPI.getVideos().then(e => {
+        setVideos(e.data)
+    })
     return (
         <div>
-            <ReactPlayer controls url={videos?.file} />
         </div>
     )
 }
