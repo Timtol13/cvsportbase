@@ -7,20 +7,17 @@ import {Registration} from "../registration/registration";
 import {Advance} from "../registration/advance/Advance";
 import {Profile} from "../Profile/Profile";
 import {Header} from "../Header";
-import {MainModal} from "../Modal/MainModal/MainModal";
 import {Modals} from "../Modal/Modals";
+import {Home} from "./Home/Home";
 
 export const Main = () => {
-    const [videos, setVideos] = useState<VideoType>()
-    getAPI.getVideos().then(e => {
-        setVideos(e.data)
-    })
     return (
         <div>
             <Header/>
             <main>
                 <Routes>
-                    <Route path='/' element={<Navigate to={'login'} />}/>
+                    <Route path='/' element={<Navigate to={'home'} />}/>
+                    <Route path='/home' element={<Home />}/>
                     <Route path='/login' element={<Login />}/>
                     <Route path='/registration' element={<Registration />}/>
                     <Route path='/advance/:role' element={<Advance />}/>
