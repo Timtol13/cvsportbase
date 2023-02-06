@@ -29,15 +29,6 @@ export const Header = () => {
                     </ul>
                 </nav>
             </header>
-            <main>
-                <Routes>
-                    <Route path='/' element={<Main />}/>
-                    <Route path='/login' element={<Login />}/>
-                    <Route path='/registration' element={<Registration />}/>
-                    <Route path='/advance/:role' element={<Advance />}/>
-                    <Route path='/profile/:role/:first_name/:second_name/:patronymic' element={<Profile />} />
-                </Routes>
-            </main>
         </div>
     )
 }

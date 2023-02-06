@@ -8,6 +8,7 @@ import {useFormik} from "formik";
 export const Registration = () => {
     const dispatch = useAppDispatch()
     const [role, SetRole] = useState('')
+    const nav = useNavigate()
     const formik = useFormik({
         initialValues: {
             username: '',
@@ -20,7 +21,7 @@ export const Registration = () => {
             return nav(`/advance/${role}`)
         },
     })
-    let nav = useNavigate()
+
     return (
         <form onSubmit={formik.handleSubmit}>
             <div className={'cont'}>

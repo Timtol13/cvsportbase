@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import {useParams} from 'react-router'
 import {getAPI} from '../../api/api'
-import {MainModal} from '../Modal/MainModal'
+import {MainModal} from '../Modal/MainModal/MainModal'
 import './Profile.modul.scss'
 import {AdvanceFormType} from "../../api/RequestType";
 export const Profile = () => {
@@ -11,7 +11,6 @@ export const Profile = () => {
     return (
         <div className={'container'}>
             <img src={roleData?.photo} className={'profile_photo'}/>
-            <MainModal />
         </div>
     )
 }
