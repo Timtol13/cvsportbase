@@ -30,7 +30,6 @@ export const advanceTC = createAsyncThunk(
   async (params: {role:string, data: AdvanceFormType}, { dispatch }) => {
     dispatch(setAppStatus(requestStatus.LOADING))
     try {
-        console.log(params.data)
       const res = await authAPI.advance(params.role, params.data)
         dispatch(setMyRole(res.data))
       dispatch(setAppStatus(requestStatus.SUCCEEDED))

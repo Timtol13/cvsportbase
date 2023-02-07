@@ -1,17 +1,24 @@
 import React, {useState} from 'react'
 import styles from './Forms.module.scss'
-import Select from 'react-select'
+import Select, {OnChangeValue} from 'react-select'
 import {useAppDispatch} from "../../../../hooks/hooks"
 import {advanceTC} from "../../../../store/bll/authReducer"
 import {useFormik} from "formik"
 import {useNavigate} from "react-router"
-import {FILE} from "dns";
+
+type PositionsType = {
+    value: number
+    label: string
+    isFixed?: boolean
+}
 
 export const Player = () => {
     const dispatch = useAppDispatch()
     const nav = useNavigate()
-    //
+
     const [leg, setLeg] =  useState('')
+    const [position, setPosition] =  useState<PositionsType[]>([])
+
     const positions = [
         {value: 1 , label: "Вратарь"},
         {value: 2 , label: "Центральный защитник"},
@@ -38,7 +45,7 @@ export const Player = () => {
             phone: '',
             email: '',
             country: '',
-            position: [],
+            position: 1,
             shengen: false,
             city: '',
             description: '',
@@ -48,40 +55,51 @@ export const Player = () => {
         },
 
         onSubmit: values => {
-            dispatch(advanceTC({role: 'Player', data: {...values, leg}})).then(() => {
+            dispatch(advanceTC({role: 'Player', data: {...values, leg, position}})).then(() => {
                 return nav(`/profile/Player/${values.first_name}/${values.second_name}/${values.patronymic}`)})
         },
     })
-
+    const orderOptions = (values: readonly PositionsType[]) => {
+        return values
+            .filter((v) => v.isFixed)
+            .concat(values.filter((v) => !v.isFixed));
+    };
+    const onChange = (newValue: OnChangeValue<PositionsType, true>,) => {
+        setPosition(orderOptions(newValue));
+    };
     return (
-        <form onSubmit={formik.handleSubmit} className={styles.form}>
-            <label className={styles.input_file}>
-                <span>+</span>
-                <input {...formik.getFieldProps('photo')} type={'file'} className={styles.files} />
-            </label>
-            <div className={styles.inputs}>
-                <input {...formik.getFieldProps('first_name')} placeholder={'Имя'} />
-                <input {...formik.getFieldProps('second_name')} placeholder={'Фамилия'} />
-                <input {...formik.getFieldProps('patronymic')} placeholder={'Отчество'} />
-                <input {...formik.getFieldProps('age')} placeholder={'Возраст'} />
-                <input {...formik.getFieldProps('height')} placeholder={'Рост'} />
-                <input {...formik.getFieldProps('weight')} placeholder={'Вес'} />
-                <input {...formik.getFieldProps('phone')} placeholder={'Телефон'} />
-                <input {...formik.getFieldProps('email')} placeholder={'E-mail'} />
-                <input {...formik.getFieldProps('country')} placeholder={'Страна'} />
-                <input {...formik.getFieldProps('city')} placeholder={'Город'} />
-                <select onChange={e => setLeg(e.target.value)}>
-                    <option value={'R'}>Правая</option>
-                    <option value={'L'}>Левая</option>
-                    <option value={'B'}>Обе</option>
-                </select>
-                <Select isMulti options={positions} className={styles.select} {...formik.getFieldProps('position')} />
+        <>
+            <form onSubmit={formik.handleSubmit} className={styles.form}>
+                <label className={styles.input_file}>
+                    <span>+</span>
+                    <input {...formik.getFieldProps('photo')} type={'file'} className={styles.files}/>
+                </label>
+                <div className={styles.inputs}>
+                    <input {...formik.getFieldProps('first_name')} placeholder={'Имя'}/>
+                    <input {...formik.getFieldProps('second_name')} placeholder={'Фамилия'}/>
+                    <input {...formik.getFieldProps('patronymic')} placeholder={'Отчество'}/>
+                    <input {...formik.getFieldProps('age')} placeholder={'Возраст'}/>
+                    <input {...formik.getFieldProps('height')} placeholder={'Рост'}/>
+                    <input {...formik.getFieldProps('weight')} placeholder={'Вес'}/>
+                    <input {...formik.getFieldProps('phone')} placeholder={'Телефон'}/>
+                    <input {...formik.getFieldProps('email')} placeholder={'E-mail'}/>
+                    <input {...formik.getFieldProps('country')} placeholder={'Страна'}/>
+                    <input {...formik.getFieldProps('city')} placeholder={'Город'}/>
+                    <select onChange={e => setLeg(e.target.value)}>
+                        <option value={'R'}>Правая</option>
+                        <option value={'L'}>Левая</option>
+                        <option value={'B'}>Обе</option>
+                    </select>
+                    <Select className={styles.select} isMulti options={positions} onChange={onChange}/>
+                    <textarea {...formik.getFieldProps('description')} placeholder={"Расскажите о себе"}/>
+                    <input {...formik.getFieldProps('shengen')} className={styles.checkbox} type={'checkbox'}/> <i>Наличие
+                    шенгена</i>
+                    <input {...formik.getFieldProps('is_show')} className={styles.checkbox} type={'checkbox'}/> <i>Отображать
+                    всем</i>
+                    <button type="submit">Добавить</button>
+                </div>
+            </form>
 
-                <textarea {...formik.getFieldProps('description')} placeholder={"Расскажите о себе"}/>
-                <input {...formik.getFieldProps('shengen')} className={styles.checkbox} type={'checkbox'} /> <i>Наличие шенгена</i>
-                <input {...formik.getFieldProps('is_show')} className={styles.checkbox} type={'checkbox'} /> <i>Отображать всем</i>
-                <button type="submit">Добавить</button>
-            </div>
-        </form>
+        </>
     )
 }
