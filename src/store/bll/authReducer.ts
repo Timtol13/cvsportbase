@@ -25,26 +25,14 @@ export const registrationTC = createAsyncThunk(
     }
   }
 )
-export const getRoleTC = createAsyncThunk(
-    'getRole',
-    async(data: {role: string, first_name: string, second_name: string, patronymic: string}, {dispatch}) =>{
-        dispatch(setAppStatus(requestStatus.LOADING))
-        try {
-            const res = await getAPI.getRole(data.role, data.first_name, data.second_name, data.patronymic)
-            dispatch(setAppStatus(requestStatus.SUCCEEDED))
-        }catch(err){
-            handleError(err, dispatch)
-            dispatch(setAppStatus(requestStatus.FAILED))
-        }
-    }
-)
 export const advanceTC = createAsyncThunk(
   'advance',
   async (params: {role:string, data: AdvanceFormType}, { dispatch }) => {
     dispatch(setAppStatus(requestStatus.LOADING))
     try {
+        console.log(params.data)
       const res = await authAPI.advance(params.role, params.data)
-
+        dispatch(setMyRole(res.data))
       dispatch(setAppStatus(requestStatus.SUCCEEDED))
     } catch (err) {
       handleError(err, dispatch)
@@ -61,6 +49,12 @@ const slice = createSlice({
       username: '',
       email: ''
     },
+      myRole: {
+        role: '',
+        first_name: '',
+        second_name: '',
+        patronymic: '',
+      },
     lng: 'ru',
     isLoggedIn: false,
   },
@@ -71,9 +65,12 @@ const slice = createSlice({
     setMe(state, action) {
       state.me = action.payload
     },
+      setMyRole(state, action){
+        state.myRole = action.payload
+      }
   },
 })
 
 export const authReducer = slice.reducer
 
-export const { setMe, changeLoggedIn } = slice.actions
+export const { setMe, changeLoggedIn, setMyRole } = slice.actions

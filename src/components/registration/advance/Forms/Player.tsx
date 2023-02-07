@@ -1,16 +1,31 @@
 import React, {useState} from 'react'
 import styles from './Forms.module.scss'
-import {useAppDispatch} from "../../../../hooks/hooks";
-import {advanceTC} from "../../../../store/bll/authReducer";
-import {useFormik} from "formik";
-import {useNavigate} from "react-router";
+import Select from 'react-select'
+import {useAppDispatch} from "../../../../hooks/hooks"
+import {advanceTC} from "../../../../store/bll/authReducer"
+import {useFormik} from "formik"
+import {useNavigate} from "react-router"
+import {FILE} from "dns";
 
 export const Player = () => {
     const dispatch = useAppDispatch()
     const nav = useNavigate()
     //
     const [leg, setLeg] =  useState('')
-    const [position, setPosition] = useState([""])
+    const positions = [
+        {value: 1 , label: "Вратарь"},
+        {value: 2 , label: "Центральный защитник"},
+        {value: 3 , label: "Левый защитник"},
+        {value: 4 , label: "Правый защитник"},
+        {value: 5 , label: "Центральный опорный полузащитник"},
+        {value: 6 , label: "Центральный полузащитник"},
+        {value: 7 , label: "Левый полузащитник"},
+        {value: 8 , label: "Правый полузащитник"},
+        {value: 9 , label: "Центральный нападающий"},
+        {value: 10 , label: "Правый вингер"},
+        {value: 11 , label: "Левый вингер"},
+        {value: 12 , label: "Инсайдер"},
+    ]
     //
     const formik = useFormik({
         initialValues: {
@@ -23,6 +38,7 @@ export const Player = () => {
             phone: '',
             email: '',
             country: '',
+            position: [],
             shengen: false,
             city: '',
             description: '',
@@ -32,9 +48,8 @@ export const Player = () => {
         },
 
         onSubmit: values => {
-            console.log(position)
-            dispatch(advanceTC({role: 'Player', data: {...values, leg, position}}))
-            return nav(`/profile/Player/${values.first_name}/${values.second_name}/${values.patronymic}`)
+            dispatch(advanceTC({role: 'Player', data: {...values, leg}})).then(() => {
+                return nav(`/profile/Player/${values.first_name}/${values.second_name}/${values.patronymic}`)})
         },
     })
 
@@ -60,20 +75,8 @@ export const Player = () => {
                     <option value={'L'}>Левая</option>
                     <option value={'B'}>Обе</option>
                 </select>
-                <select onChange={e => setPosition([e.target.value])}>
-                    <option value={"1"}>Вратарь</option>
-                    <option value={"2"}>Центральный защитник</option>
-                    <option value={"3"}>Левый защитник</option>
-                    <option value={"4"}>Правый защитник</option>
-                    <option value={"5"}>Центральный опорный полузащитник</option>
-                    <option value={"6"}>Центральный полузащитник</option>
-                    <option value={"7"}>Левый полузащитник</option>
-                    <option value={"8"}>Правый полузащитник</option>
-                    <option value={"9"}>Центральный нападающий</option>
-                    <option value={"10"}>Правый вингер</option>
-                    <option value={"11"}>Левый вингер</option>
-                    <option value={"12"}>Инсайдер</option>
-                </select>
+                <Select isMulti options={positions} className={styles.select} {...formik.getFieldProps('position')} />
+
                 <textarea {...formik.getFieldProps('description')} placeholder={"Расскажите о себе"}/>
                 <input {...formik.getFieldProps('shengen')} className={styles.checkbox} type={'checkbox'} /> <i>Наличие шенгена</i>
                 <input {...formik.getFieldProps('is_show')} className={styles.checkbox} type={'checkbox'} /> <i>Отображать всем</i>

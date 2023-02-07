@@ -43,12 +43,23 @@ form {
       }
     }
 
-        input, textarea, select {
+        input, textarea,  {
           flex: 1 1 0;
           margin: 8px;
           width: 300px;
           height: 30px;
           color: #fff;
+          background-color: transparent;
+          border: #fff 2px solid;
+          border-radius: 10px;
+          text-indent: 8px;
+        }
+        .select{
+          flex: 1 1 0;
+          margin: 8px;
+          width: 300px;
+          height: 30px;
+          color: #000;
           background-color: transparent;
           border: #fff 2px solid;
           border-radius: 10px;
