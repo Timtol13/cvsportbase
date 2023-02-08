@@ -25,7 +25,7 @@ export const registrationTC = createAsyncThunk(
     }
   }
 )
-export const advanceTC = createAsyncThunk(
+export const  advanceTC = createAsyncThunk(
   'advance',
   async (params: {role:string, data: AdvanceFormType}, { dispatch }) => {
     dispatch(setAppStatus(requestStatus.LOADING))

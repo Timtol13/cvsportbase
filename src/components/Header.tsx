@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Link, Routes} from 'react-router-dom';
+import {Route, Link, Routes, BrowserRouter} from 'react-router-dom';
 import {Registration} from './registration/registration'
 import {Login} from './registration/Login'
 import {Main} from './Main/Main'
@@ -11,6 +11,7 @@ export const Header = () => {
 
     return (
         <div>
+            <BrowserRouter>
             <header>
                 <nav>
                     <ul>
@@ -29,6 +30,7 @@ export const Header = () => {
                     </ul>
                 </nav>
             </header>
+            </BrowserRouter>
         </div>
     )
 }

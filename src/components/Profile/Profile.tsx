@@ -12,7 +12,7 @@ export const Profile = () => {
     }, [])
     return (
         <div className={'container'}>
-            <img src={roleData?.photo} className={'profile_photo'}/>
+            <img src={roleData?.photo?.toString()} className={'profile_photo'}/>
         </div>
     )
 }
