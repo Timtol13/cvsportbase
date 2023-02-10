@@ -1,5 +1,7 @@
-import React from 'react'
-import {BrowserRouter, Link, Navigate, Route, Routes} from "react-router-dom";
+import React, {useState} from 'react'
+import {getAPI} from '../../api/api'
+import {VideoType} from '../../api/RequestType'
+import {Navigate, Route, Routes} from "react-router-dom";
 import {Login} from "../registration/Login";
 import {Registration} from "../registration/registration";
 import {Advance} from "../registration/advance/Advance";
@@ -11,26 +13,7 @@ import {Home} from "./Home/Home";
 export const Main = () => {
     return (
         <div>
-            <BrowserRouter>
-                <header>
-                    <nav>
-                        <ul>
-                            <li>
-                                <Link to="/">Главная</Link>
-                            </li>
-                            <li>
-                                <Link to="/profile">Мой профиль</Link>
-                            </li>
-                            <li>
-                                <Link to="/registration">Регистрация</Link>
-                            </li>
-                            <li>
-                                <Link to="/login">LogIn</Link>
-                            </li>
-                        </ul>
-                    </nav>
-                </header>
-            </BrowserRouter>
+            <Header/>
             <main>
                 <Routes>
                     <Route path='/' element={<Navigate to={'home'} />}/>
@@ -41,6 +24,7 @@ export const Main = () => {
                     <Route path='/profile/:role/:first_name/:second_name/:patronymic' element={<Profile />} />
                 </Routes>
             </main>
+            <Modals />
         </div>
     )
 }

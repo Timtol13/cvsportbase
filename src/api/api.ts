@@ -3,13 +3,15 @@ import {AdvanceFormType, RegistrationFormType} from "./RequestType";
 
 const instance = axios.create({
     baseURL: 'http://127.0.0.1:8000/api/',
-    headers:{
-        'Content-Type': 'application/x-www-form-urlencoded', //x-www-form-urlencoded
-    }
+    withCredentials: true,
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+    },
 })
 export const authAPI = {
     registration(data: RegistrationFormType) {
-        return instance.post<RegistrationFormType>(`registration/`, data)
+        return instance.post<RegistrationFormType>(`token/`, data)
     },
     advance(role: string, data: AdvanceFormType) {
         return instance.post<AdvanceFormType>(`advanced/${role}/`, data)

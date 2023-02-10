@@ -17,11 +17,23 @@ export const Login = () => {
             password: '',
         },
         onSubmit: values => {
-            fetch(`${api}registration/`, {
-                method: 'GET',
-                //body: JSON.stringify(values)
-            }).then(e => {setUser('')})
-            console.log(user)
+            return fetch(`${api}token/`, {
+                headers:{
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                method: 'POST',
+                body: JSON.stringify(values)
+            })
+                .then((res) => {
+                    if (res.status === 200) {
+                        const tokenData = res.json();
+                        sessionStorage.setItem('tokenData', JSON.stringify(JSON.stringify(tokenData)));
+                        return Promise.resolve()
+                    }
+                    return Promise.reject();})
+                .then(() => {return nav('/home')})
         }
     }
     )
