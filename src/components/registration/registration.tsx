@@ -6,7 +6,6 @@ import {useAppDispatch} from "../../hooks/hooks";
 import {useFormik} from "formik";
 
 export const Registration = () => {
-    const api = 'http://127.0.0.1:8000/api/'
     const dispatch = useAppDispatch()
     const [role, SetRole] = useState('')
     const nav = useNavigate()
@@ -18,26 +17,7 @@ export const Registration = () => {
         },
 
         onSubmit: values => {
-            return fetch(`${api}registration`, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(values)
-            }).then(((res) => {
-                if (res.status === 200) {
-                    const tokenData = res.json();
-                    sessionStorage.setItem('tokenData', JSON.stringify(JSON.stringify(tokenData)));
-                    return Promise.resolve()
-                }
-                return Promise.reject();
-                }
-                )
-            )
-            // dispatch(registrationTC({...values, role}))
-            // return nav(`/advance/${role}`)
+            dispatch(registrationTC({...values, role})).then(() => {return nav('/home')})
         },
     })
 

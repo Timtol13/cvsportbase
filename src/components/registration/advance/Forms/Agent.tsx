@@ -3,9 +3,11 @@ import {useAppDispatch} from "../../../../hooks/hooks";
 import React, {useState} from "react";
 import {useFormik} from "formik";
 import {advanceTC} from "../../../../store/bll/authReducer";
+import {useNavigate} from "react-router";
 
 export const Agent = () => {
     const dispatch = useAppDispatch()
+    const nav = useNavigate()
     const formik = useFormik({
         initialValues: {
             age: '',
@@ -18,11 +20,14 @@ export const Agent = () => {
             city: '',
             is_show: true,
             photo: '',
-            user: ''
+            user: 0
         },
 
         onSubmit: values => {
-            dispatch(advanceTC({role: 'Agent', data: values}))
+            dispatch(advanceTC({role: 'Agent', data: values})).then(() =>
+            {
+                return nav(`/profile/Agent/${values.first_name}/${values.second_name}/${values.patronymic}`)
+            })
 
         },
     })

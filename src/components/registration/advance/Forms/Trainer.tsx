@@ -18,7 +18,7 @@ export const Trainer = () => {
             city: '',
             is_show: true,
             photo: '',
-            user: '',
+            user: 0,
             country_s: '',
             city_s: '',
             phone_s: '',

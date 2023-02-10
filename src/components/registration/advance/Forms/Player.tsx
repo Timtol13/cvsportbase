@@ -51,7 +51,7 @@ export const Player = () => {
             description: '',
             is_show: false,
             photo: '',
-            user: ''
+            user: 0
         },
 
         onSubmit: values => {

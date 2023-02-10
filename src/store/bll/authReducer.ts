@@ -16,7 +16,7 @@ export const registrationTC = createAsyncThunk(
     try {
         console.log(data)
       const res = await authAPI.registration(data)
-      dispatch(setMe(res.data))
+        localStorage.setItem('role', data.role)
       dispatch(changeLoggedIn(true))
       dispatch(setAppStatus(requestStatus.SUCCEEDED))
     } catch (err) {
@@ -25,13 +25,31 @@ export const registrationTC = createAsyncThunk(
     }
   }
 )
+
+export const loginTC = createAsyncThunk(
+    'login',
+    async (data: {username: string, password: string, role: string}, { dispatch }) => {
+        dispatch(setAppStatus(requestStatus.LOADING))
+        try {
+            console.log(data)
+            const res = await authAPI.login(data)
+            localStorage.setItem('role', data.role)
+            dispatch(changeLoggedIn(true))
+            dispatch(setAppStatus(requestStatus.SUCCEEDED))
+        } catch (err) {
+            handleError(err, dispatch)
+            dispatch(setAppStatus(requestStatus.FAILED))
+        }
+    }
+)
+
 export const  advanceTC = createAsyncThunk(
   'advance',
   async (params: {role:string, data: AdvanceFormType}, { dispatch }) => {
     dispatch(setAppStatus(requestStatus.LOADING))
     try {
+        console.log(params.data)
       const res = await authAPI.advance(params.role, params.data)
-        dispatch(setMyRole(res.data))
       dispatch(setAppStatus(requestStatus.SUCCEEDED))
     } catch (err) {
       handleError(err, dispatch)
@@ -48,12 +66,6 @@ const slice = createSlice({
       username: '',
       email: ''
     },
-      myRole: {
-        role: '',
-        first_name: '',
-        second_name: '',
-        patronymic: '',
-      },
     lng: 'ru',
     isLoggedIn: false,
   },
@@ -64,12 +76,9 @@ const slice = createSlice({
     setMe(state, action) {
       state.me = action.payload
     },
-      setMyRole(state, action){
-        state.myRole = action.payload
-      }
   },
 })
 
 export const authReducer = slice.reducer
 
-export const { setMe, changeLoggedIn, setMyRole } = slice.actions
+export const { setMe, changeLoggedIn } = slice.actions

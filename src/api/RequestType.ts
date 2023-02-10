@@ -15,7 +15,7 @@ export type AdvanceFormType = {
     country: string,
     city: string,
     photo: string,
-    user: string
+    user: number,
     is_show: boolean,
     leg?: string,
     position?: any,

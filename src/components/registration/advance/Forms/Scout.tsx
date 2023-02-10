@@ -18,7 +18,7 @@ export const Scout = () => {
             city: '',
             is_show: true,
             photo: '',
-            user: '',
+            user: 0,
         },
 
         onSubmit: values => {

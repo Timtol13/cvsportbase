@@ -8,7 +8,7 @@ export const Home = () => {
 
     useEffect(()=> {
         getAPI.getVideos().then(e => {
-            setVideos(e.data[0])
+            setVideos(e.data)
         })
     }, [])
     const [playing, setPlaying] = useState(false)
