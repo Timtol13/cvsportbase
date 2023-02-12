@@ -1,11 +1,12 @@
 import axios from "axios";
 import {AdvanceFormType, RegistrationFormType} from "./RequestType";
+import {useNavigate} from "react-router";
 
-const token = sessionStorage.getItem('tokenData')
-const api = 'http://127.0.0.1:8000/api/'
+let token = sessionStorage.getItem('tokenData')
+const api = 'http://127.0.0.1:8000/'
 
 const instance = axios.create({
-    baseURL: api,
+    baseURL: `${api}api/`,
     withCredentials: true,
     headers: {
         'Accept': 'application/json',
@@ -23,17 +24,23 @@ export const authAPI = {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data)
-        }).then(((res) => {
-                    if (res.status === 200) {
-                        const tokenData = res.json();
-                        sessionStorage.setItem('tokenData', JSON.stringify(JSON.stringify(tokenData)));
-                        return Promise.resolve()
-                    }
-                    return Promise.reject();
-                }
-            )
-        )
-    },
+        }).then(() => {
+        return fetch(`${api}login/`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }
+        ).then(((res) => {
+            if (res.status === 200) {
+                sessionStorage.setItem('tokenData', JSON.stringify(JSON.stringify(res.json())));
+                return Promise.resolve()
+            }
+            return Promise.reject()
+        }))})},
     login(data: {username: string, password: string}){
         return fetch(`${api}login/`, {
             method: 'POST',
@@ -49,6 +56,8 @@ export const authAPI = {
                         sessionStorage.setItem('tokenData', JSON.stringify(JSON.stringify(tokenData)));
                         return Promise.resolve()
                     }
+                    if(res.status === 400){
+                        return console.log("Uncorrect data") }
                     return Promise.reject();
                 }
             )
