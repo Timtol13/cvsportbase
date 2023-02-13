@@ -5,6 +5,7 @@ import {useAppDispatch} from "../../../../hooks/hooks"
 import {advanceTC} from "../../../../store/bll/authReducer"
 import {useFormik} from "formik"
 import {useNavigate} from "react-router"
+import {authAPI} from "../../../../api/api";
 
 type PositionsType = {
     value: number
@@ -18,6 +19,7 @@ export const Player = () => {
 
     const [leg, setLeg] =  useState('')
     const [position, setPosition] =  useState<PositionsType[]>([])
+    const [image, setImage] = useState<any>()
 
     const positions = [
         {value: 1 , label: "Вратарь"},
@@ -72,7 +74,11 @@ export const Player = () => {
             <form onSubmit={formik.handleSubmit} className={styles.form}>
                 <label className={styles.input_file}>
                     <span>+</span>
-                    <input {...formik.getFieldProps('photo')} type={'file'} className={styles.files}/>
+                    <input onChange={(e) => {
+                        setImage(e.target.files)
+                        console.log(typeof(image))
+                    }
+                    } type={'file'} className={styles.files}/>
                 </label>
                 <div className={styles.inputs}>
                     <input {...formik.getFieldProps('first_name')} placeholder={'Имя'}/>

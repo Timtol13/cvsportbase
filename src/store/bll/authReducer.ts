@@ -5,7 +5,7 @@ import {handleError} from '../../utils/handleError'
 
 import {setAppStatus} from './appReducer'
 
-import {authAPI, getAPI} from '../../api/api'
+import {authAPI} from '../../api/api'
 import {AdvanceFormType, RegistrationFormType} from "../../api/RequestType";
 
 //THUNKS
@@ -28,7 +28,7 @@ export const registrationTC = createAsyncThunk(
 
 export const loginTC = createAsyncThunk(
     'login',
-    async (data: {username: string, password: string, role: string}, { dispatch }) => {
+    async (data: {username: string, email: string, password: string, role: string}, { dispatch }) => {
         dispatch(setAppStatus(requestStatus.LOADING))
         try {
             console.log(data)
@@ -50,6 +50,7 @@ export const  advanceTC = createAsyncThunk(
     try {
         console.log(params.data)
       const res = await authAPI.advance(params.role, params.data)
+        localStorage.setItem('user', '')
       dispatch(setAppStatus(requestStatus.SUCCEEDED))
     } catch (err) {
       handleError(err, dispatch)

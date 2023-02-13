@@ -1,7 +1,7 @@
 import * as string_decoder from "string_decoder";
 
 export type RegistrationFormType = {
-    name: string,
+    username: string,
     email: string,
     password: string
     role: string

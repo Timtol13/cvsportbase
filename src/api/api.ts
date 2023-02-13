@@ -1,9 +1,9 @@
 import axios from "axios";
 import {AdvanceFormType, RegistrationFormType} from "./RequestType";
-import {useNavigate} from "react-router";
 
 let token = sessionStorage.getItem('tokenData')
 const api = 'http://127.0.0.1:8000/'
+console.log(JSON.parse(token? token : '').access)
 
 const instance = axios.create({
     baseURL: `${api}api/`,
@@ -11,8 +11,15 @@ const instance = axios.create({
     headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Authentication': token
+        'Authorization': `Bearer ${JSON.parse(token? token : '').access}`
     },
+})
+const instancePhoto = axios.create({
+    baseURL: `${api}/add/photo/`,
+    withCredentials: true,
+    headers: {
+        "Content-Type": "multipart/form-data",
+    }
 })
 export const authAPI = {
     registration(data: RegistrationFormType) {
@@ -25,23 +32,9 @@ export const authAPI = {
             },
             body: JSON.stringify(data)
         }).then(() => {
-        return fetch(`${api}login/`, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            }
-        ).then(((res) => {
-            if (res.status === 200) {
-                sessionStorage.setItem('tokenData', JSON.stringify(JSON.stringify(res.json())));
-                return Promise.resolve()
-            }
-            return Promise.reject()
-        }))})},
-    login(data: {username: string, password: string}){
+            this.login(data).then(r => console.log(`isLogged ${r}`))
+        })},
+    login(data: {username: string, email: string, password: string}){
         return fetch(`${api}login/`, {
             method: 'POST',
             credentials: 'include',
@@ -53,7 +46,9 @@ export const authAPI = {
         }).then(((res) => {
                     if (res.status === 200) {
                         const tokenData = res.json();
-                        sessionStorage.setItem('tokenData', JSON.stringify(JSON.stringify(tokenData)));
+                        console.log(`Bearer ${token}`)
+                        tokenData.then((res) => {sessionStorage.setItem('tokenData', JSON.stringify(res));})
+                        console.log("isLogged")
                         return Promise.resolve()
                     }
                     if(res.status === 400){
@@ -66,7 +61,9 @@ export const authAPI = {
     advance(role: string, data: AdvanceFormType) {
         return instance.post<AdvanceFormType>(`advanced/${role}/`, data)
     },
-
+    createPhoto(photo: File){
+        return instancePhoto.post<File>('', photo)
+    }
 }
 export const getAPI = {
     getRole(role: string | undefined, first_name: string | undefined, second_name: string | undefined, patronymic: string | undefined){
@@ -80,7 +77,7 @@ function saveToken(token : any) {
     sessionStorage.setItem('tokenData', JSON.stringify(token));
 }
 const refreshToken = (token : any) => {
-    return fetch('api/refreshToken', {
+    return fetch(`${api}login/refresh`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -94,32 +91,35 @@ const refreshToken = (token : any) => {
         .then((res) => {
             if (res.status === 200) {
                 const tokenData = res.json();
-                saveToken(JSON.stringify(tokenData)); // сохраняем полученный обновленный токен в sessionStorage, с помощью функции, заданной ранее
-                return Promise.resolve();
+                tokenData.then((res) => {sessionStorage.setItem('tokenData', JSON.stringify(res))})
+                console.log("isLogged")
+                return Promise.resolve()
             }
+            if(res.status === 400){
+                return console.log("Uncorrect data") }
             return Promise.reject();
         });
 }
 export async function fetchWithAuth(url? : any, options? : any) {
     let tokenData = null
-    const loginUrl = '/login'; // url страницы для авторизации
+    const loginUrl = '/login';
 
-    if (sessionStorage.authToken) { // если в sessionStorage присутствует tokenData, то берем её
+    if (sessionStorage.authToken) {
         tokenData = JSON.parse(localStorage.tokenData);
     } else {
-        return window.location.replace(loginUrl); // если токен отсутствует, то перенаправляем пользователя на страницу авторизации
+        return window.location.replace(loginUrl);
     }
 
-    if (!options.headers) { // если в запросе отсутствует headers, то задаем их
+    if (!options.headers) {
         options.headers = {};
     }
 
     if (tokenData) {
-        if (Date.now() >= tokenData.expires_on * 1000) { // проверяем не истек ли срок жизни токена
+        if (Date.now() >= tokenData.expires_on * 1000) {
             try {
-                const newToken = await refreshToken(tokenData.refresh_token); // если истек, то обновляем токен с помощью refresh_token
+                const newToken = await refreshToken(tokenData.refresh_token);
                 saveToken(newToken);
-            } catch (Error) { // если тут что-то пошло не так, то перенаправляем пользователя на страницу авторизации
+            } catch (Error) {
                 return window.location.replace(loginUrl);
             }
         }

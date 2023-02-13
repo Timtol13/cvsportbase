@@ -11,13 +11,13 @@ export const Registration = () => {
     const nav = useNavigate()
     const formik = useFormik({
         initialValues: {
-            name: '',
+            username: '',
             email: '',
             password: '',
         },
 
         onSubmit: values => {
-            dispatch(registrationTC({...values, role})).then(() => {return nav('/home')})
+            dispatch(registrationTC({...values, role})).then(() => {return nav(`/advance/${role}`)})
         },
     })
 
@@ -26,7 +26,7 @@ export const Registration = () => {
             <div className={'cont'}>
                 <div className={'form'}>
                     <div className={'inputs'}>
-                        <input placeholder={'Введите логин'} {...formik.getFieldProps('name')} />
+                        <input placeholder={'Введите логин'} {...formik.getFieldProps('username')} />
                         <input placeholder={'Введите e-mail'} {...formik.getFieldProps('email')} />
                         <input type={'password'} placeholder={'Введите пароль'} {...formik.getFieldProps('password')} />
                         <select id={'role'} onChange={e => {SetRole(e.target.value)}}>
