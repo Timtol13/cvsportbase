@@ -22,6 +22,7 @@ export const Player = () => {
     const [leg, setLeg] =  useState('')
     const [position, setPosition] =  useState<PositionsType[]>([])
     const [image, setImage] = useState<any>()
+    const api = 'http://127.0.0.1:8000/'
 
     const positions = [
         {value: 1 , label: "Вратарь"},
@@ -54,7 +55,6 @@ export const Player = () => {
             city: '',
             description: '',
             is_show: false,
-            photo: '',
             user: 0
         },
 
@@ -80,7 +80,7 @@ export const Player = () => {
                         const formData = new FormData()
                         formData.append('image', e.target.files[0], e.target.files[0].name)
                         formData.append('token', JSON.parse(token? token : '').access)
-                        axios.post('/ProfilePhoto', formData).then((res) => {console.log(res)})
+                        axios.post(`${api}ProfilePhoto/`, formData).then((res) => {console.log(res)})
                     }
                     } className={styles.files}/>
                 </label>

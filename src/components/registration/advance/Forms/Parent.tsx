@@ -17,7 +17,6 @@ export const Parent = () => {
             country: '',
             city: '',
             is_show: true,
-            photo: '',
             user: 0,
         },
 

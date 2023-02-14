@@ -4,6 +4,7 @@ import React, {useState} from "react";
 import {useFormik} from "formik";
 import {advanceTC} from "../../../../store/bll/authReducer";
 import {useNavigate} from "react-router";
+import axios from "axios";
 
 export const Agent = () => {
     const dispatch = useAppDispatch()
@@ -19,7 +20,6 @@ export const Agent = () => {
             country: '',
             city: '',
             is_show: true,
-            photo: '',
             user: 0
         },
 
@@ -36,7 +36,15 @@ export const Agent = () => {
         <form onSubmit={formik.handleSubmit} className={styles.form}>
             <label className={styles.input_file}>
                 <span>+</span>
-                <input {...formik.getFieldProps('photo')} type={'file'} className={styles.files} />
+                <input type={'file'} onChange={(e : any) => {
+                    const formData = new FormData()
+                    const api = 'http://127.0.0.1:8000/'
+                    let token = sessionStorage.getItem('tokenData');
+                    formData.append('image', e.target.files[0], e.target.files[0].name)
+                    formData.append('token', JSON.parse(token? token : '').access)
+                    axios.post(`${api}ProfilePhoto/`, formData).then((res) => {console.log(res)})
+                }
+                } className={styles.files}/>
             </label>
             <div className={styles.inputs}>
                 <input {...formik.getFieldProps('first_name')} placeholder={'Имя'} />
