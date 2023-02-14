@@ -13,7 +13,7 @@ type PositionsType = {
     label: string
     isFixed?: boolean
 }
-let token = JSON.parse(sessionStorage.getItem('tokenData')).access
+let token = sessionStorage.getItem('tokenData');
 
 export const Player = () => {
     const dispatch = useAppDispatch()
@@ -79,7 +79,7 @@ export const Player = () => {
                     <input type={'file'} onChange={(e : any) => {
                         const formData = new FormData()
                         formData.append('image', e.target.files[0], e.target.files[0].name)
-                        formData.append('token', token)
+                        formData.append('token', JSON.parse(token? token : '').access)
                         axios.post('/ProfilePhoto', formData).then((res) => {console.log(res)})
                     }
                     } className={styles.files}/>
