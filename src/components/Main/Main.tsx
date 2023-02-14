@@ -1,6 +1,4 @@
-import React, {useState} from 'react'
-import {getAPI} from '../../api/api'
-import {VideoType} from '../../api/RequestType'
+import React from 'react'
 import {Navigate, Route, Routes} from "react-router-dom";
 import {Login} from "../registration/Login";
 import {Registration} from "../registration/registration";

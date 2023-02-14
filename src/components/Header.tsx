@@ -1,12 +1,6 @@
 import React from 'react';
-import {Route, Link, Routes} from 'react-router-dom';
-import {Registration} from './registration/registration'
-import {Login} from './registration/Login'
-import {Main} from './Main/Main'
-import {Profile} from './Profile/Profile'
+import {Link} from 'react-router-dom';
 import './headerStyle.modul.scss'
-import {Advance} from "./registration/advance/Advance";
-
 export const Header = () => {
 
     return (

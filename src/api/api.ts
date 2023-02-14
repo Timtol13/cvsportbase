@@ -10,7 +10,7 @@ const instance = axios.create({
     headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': `Bearer ${JSON.parse(token? token : '').access}`
+        'Authorization': `Bearer ${token ? JSON.parse(token).access : ''}`
     },
 })
 const instancePhoto = axios.create({
@@ -32,8 +32,9 @@ export const authAPI = {
             body: JSON.stringify(data)
         }).then(() => {
             this.login(data).then(r => console.log(`isLogged ${r}`))
-        })},
-    login(data: {username: string, email: string, password: string}){
+        })
+    },
+    login(data: { username: string, email: string, password: string }) {
         return fetch(`${api}login/`, {
             method: 'POST',
             credentials: 'include',
@@ -46,12 +47,15 @@ export const authAPI = {
                     if (res.status === 200) {
                         const tokenData = res.json();
                         console.log(`Bearer ${token}`)
-                        tokenData.then((res) => {sessionStorage.setItem('tokenData', JSON.stringify(res));})
+                        tokenData.then((res) => {
+                            sessionStorage.setItem('tokenData', JSON.stringify(res));
+                        })
                         console.log("isLogged")
                         return Promise.resolve()
                     }
-                    if(res.status === 400){
-                        return console.log("Uncorrect data") }
+                    if (res.status === 400) {
+                        return console.log("Uncorrect data")
+                    }
                     return Promise.reject();
                 }
             )
@@ -60,22 +64,24 @@ export const authAPI = {
     advance(role: string, data: AdvanceFormType) {
         return instance.post<AdvanceFormType>(`advanced/${role}/`, data)
     },
-    createPhoto(photo: File){
+    createPhoto(photo: File) {
         return instancePhoto.post<File>('', photo)
     }
 }
 export const getAPI = {
-    getRole(role: string | undefined, first_name: string | undefined, second_name: string | undefined, patronymic: string | undefined){
+    getRole(role: string | undefined, first_name: string | undefined, second_name: string | undefined, patronymic: string | undefined) {
         return instance.get(`advanced/${role}/?search=${first_name}+${second_name}+${patronymic}`)
     },
-    getVideos(){
+    getVideos() {
         return instance.get('add/video/')
     }
 }
-function saveToken(token : any) {
+
+function saveToken(token: any) {
     sessionStorage.setItem('tokenData', JSON.stringify(token));
 }
-const refreshToken = (token : any) => {
+
+const refreshToken = (token: any) => {
     return fetch(`${api}login/refresh`, {
         method: 'POST',
         credentials: 'include',
@@ -90,16 +96,20 @@ const refreshToken = (token : any) => {
         .then((res) => {
             if (res.status === 200) {
                 const tokenData = res.json();
-                tokenData.then((res) => {sessionStorage.setItem('tokenData', JSON.stringify(res))})
+                tokenData.then((res) => {
+                    sessionStorage.setItem('tokenData', JSON.stringify(res))
+                })
                 console.log("isLogged")
                 return Promise.resolve()
             }
-            if(res.status === 400){
-                return console.log("Uncorrect data") }
+            if (res.status === 400) {
+                return console.log("Uncorrect data")
+            }
             return Promise.reject();
         });
 }
-export async function fetchWithAuth(url? : any, options? : any) {
+
+export async function fetchWithAuth(url?: any, options?: any) {
     let tokenData = null
     const loginUrl = '/login';
 

@@ -10,9 +10,11 @@ export const Profile = () => {
     useEffect(() => {
         getAPI.getRole(role, first_name, second_name, patronymic).then(e => setRoleData(e.data))
     }, [])
+    const photo = ''
     return (
         <div className={'container'}>
-            <img src={roleData?.photo?.toString()} className={'profile_photo'}/>
+            <img src={photo.toString()} className={'profile_photo'}/>
+            <h3>{roleData?.first_name}{roleData?.second_name}{roleData?.patronymic}</h3>
         </div>
     )
 }
