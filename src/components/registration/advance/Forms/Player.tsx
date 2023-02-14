@@ -6,12 +6,14 @@ import {advanceTC} from "../../../../store/bll/authReducer"
 import {useFormik} from "formik"
 import {useNavigate} from "react-router"
 import {authAPI} from "../../../../api/api";
+import axios from "axios";
 
 type PositionsType = {
     value: number
     label: string
     isFixed?: boolean
 }
+let token = JSON.parse(sessionStorage.getItem('tokenData')).access
 
 export const Player = () => {
     const dispatch = useAppDispatch()
@@ -74,11 +76,13 @@ export const Player = () => {
             <form onSubmit={formik.handleSubmit} className={styles.form}>
                 <label className={styles.input_file}>
                     <span>+</span>
-                    <input onChange={(e) => {
-                        setImage(e.target.files)
-                        console.log(typeof(image))
+                    <input type={'file'} onChange={(e : any) => {
+                        const formData = new FormData()
+                        formData.append('image', e.target.files[0], e.target.files[0].name)
+                        formData.append('token', token)
+                        axios.post('/ProfilePhoto', formData).then((res) => {console.log(res)})
                     }
-                    } type={'file'} className={styles.files}/>
+                    } className={styles.files}/>
                 </label>
                 <div className={styles.inputs}>
                     <input {...formik.getFieldProps('first_name')} placeholder={'Имя'}/>

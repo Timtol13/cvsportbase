@@ -3,7 +3,6 @@ import {AdvanceFormType, RegistrationFormType} from "./RequestType";
 
 let token = sessionStorage.getItem('tokenData')
 const api = 'http://127.0.0.1:8000/'
-console.log(JSON.parse(token? token : '').access)
 
 const instance = axios.create({
     baseURL: `${api}api/`,
