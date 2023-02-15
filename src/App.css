@@ -1,9 +1,9 @@
 body{
-    background: center url('/src/media/background.jfif');
-    background-size: auto;
+    /*background: center url('/src/media/background.png');*/
+    /*background-size: auto;*/
 }
 button{
-    border: #fff 1px solid;
-    border-radius: 10px;
-    background-color: green;
+    /*border: #fff 1px solid;*/
+    /*border-radius: 10px;*/
+    /*background-color: green;*/
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 import {useParams} from "react-router"
-import {Player} from "./Forms/Player"
+import {Player} from "./Forms/Player/Player"
 import {Agent} from './Forms/Agent'
 import {Trainer} from './Forms/Trainer'
 import {Scout} from './Forms/Scout'

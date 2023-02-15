@@ -1,0 +1,82 @@
+.cont {
+  background: rgba(217, 217, 217, 0.1);
+  margin: 20px auto;
+  padding: 30px 0;
+  width: 40%;
+  text-align: center;
+  color: #FFFFFF;
+
+  .title {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 48px;
+    padding: 20px 0;
+  }
+
+  .subTitle {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    padding: 25px 0;
+  }
+
+  .form {
+    width: 70%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+
+    .input, .select {
+      border: 1px solid #FFFFFF;
+      border-radius: 5px;
+      margin: 0 0 20px;
+      padding: 11px 24px;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 18px;
+      background: rgba(255, 255, 255, 0);
+      color: rgba(255, 255, 255, 0.8);
+    }
+    .checkbox {
+      display: flex;
+      flex-direction: row;
+      align-items: start;
+      margin: 0 0 20px;
+      .assent {
+        width: 60%;
+        margin: 0 16px;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 17px;
+        text-align: start;
+      }
+    }
+    .register {
+      color: #FFFFFF;
+      border: none;
+      height: 49px;
+      background: #26C75B;
+      border-radius: 5px;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 19px;
+      margin-bottom: 26px;
+    }
+    .login {
+      text-align: start;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 17px;
+      a {
+        color: #7B67F3;
+        margin-left: 16px;
+      }
+    }
+  }
+}

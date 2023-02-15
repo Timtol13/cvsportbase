@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import {useParams} from 'react-router'
 import {getAPI} from '../../api/api'
 import {MainModal} from '../Modal/MainModal/MainModal'
-import './Profile.modul.scss'
+import './Profile.module.scss'
 import {AdvanceFormType} from "../../api/RequestType";
 export const Profile = () => {
     const {role, first_name, second_name, patronymic} = useParams()

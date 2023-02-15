@@ -1,0 +1,28 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #FFFFFF;
+  width: 90%;
+  height: 80px;
+  margin: 0 auto;
+  .logo {
+    .CV {
+      font-style: normal;
+      font-weight: 700;
+      font-size: 32px;
+      line-height: 39px;
+    }
+    .subTitle {
+      font-style: normal;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 17px;
+    }
+  }
+  .icons {
+    img {
+      margin: 7px;
+    }
+  }
+}

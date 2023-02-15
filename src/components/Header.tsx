@@ -1,28 +1,20 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
-import './headerStyle.modul.scss'
-export const Header = () => {
+import styles from './headerStyle.module.scss'
+import plus from '../media/plus_circle_outline.svg'
+import profile from '../media/profile.svg'
 
+export const Header = () => {
     return (
-        <div>
-            <header>
-                <nav>
-                    <ul>
-                        <li>
-                            <Link to="/">Главная</Link>
-                        </li>
-                        <li>
-                            <Link to="/profile">Мой профиль</Link>
-                        </li>
-                        <li>
-                            <Link to="/registration">Регистрация</Link>
-                        </li>
-                        <li>
-                            <Link to="/login">LogIn</Link>
-                        </li>
-                    </ul>
-                </nav>
-            </header>
+        <div className={styles.header}>
+            <div className={styles.logo}>
+                <div className={styles.CV}>СVSportBase</div>
+                <div className={styles.subTitle}>Поиск и продвижение игроков</div>
+            </div>
+            {/*<div>Поиск</div>*/}
+            <div className={styles.icons}>
+                <img src={plus} alt=""/>
+                <img src={profile} alt=""/>
+            </div>
         </div>
     )
 }

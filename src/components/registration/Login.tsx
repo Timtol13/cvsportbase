@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {loginTC} from "../../store/bll/authReducer";
-import './Registration.modul.scss'
+import './Registration.module.scss'
 import {useAppDispatch} from "../../hooks/hooks";
 import {useFormik} from "formik";
 import {useNavigate} from "react-router";
