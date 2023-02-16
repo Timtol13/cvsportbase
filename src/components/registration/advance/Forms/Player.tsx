@@ -1,8 +1,8 @@
 import React, {useState} from 'react'
-import styles from './Player.module.scss'
+import styles from './Forms.module.scss'
 import Select, {OnChangeValue} from 'react-select'
-import {useAppDispatch} from "../../../../../hooks/hooks"
-import {advanceTC} from "../../../../../store/bll/authReducer"
+import {useAppDispatch} from "../../../../hooks/hooks"
+import {advanceTC} from "../../../../store/bll/authReducer"
 import {useFormik} from "formik"
 import {useNavigate} from "react-router"
 import axios from "axios";
@@ -72,19 +72,20 @@ export const Player = () => {
         setPosition(orderOptions(newValue));
     };
     return (
-        <div className={styles.player}>
-            <label className={styles.input_file}>
-                <span>+</span>
-                <input type={'file'} onChange={(e: any) => {
-                    const formData = new FormData()
-                    formData.append('image', e.target.files[0], e.target.files[0].name)
-                    formData.append('token', JSON.parse(token ? token : '').access)
-                    axios.post(`${api}ProfilePhoto/`, formData).then((res) => {
-                        console.log(res)
-                    })
-                }
-                } className={styles.files}/>
-            </label>
+        <div className={styles.role}>
+            <div className={styles.files}>
+                <label className={styles.input_file}>
+                    <span>+</span>
+                    <input type={'file'} onChange={(e: any) => {
+                        const formData = new FormData()
+                        formData.append('image', e.target.files[0], e.target.files[0].name)
+                        formData.append('token', JSON.parse(token ? token : '').access)
+                        axios.post(`${api}ProfilePhoto/`, formData).then((res) => {
+                            console.log(res)
+                        })
+                    }
+                    } className={styles.files}/>
+                </label></div>
             <form onSubmit={formik.handleSubmit} className={styles.form}>
                 <div className={styles.title}>Игрок</div>
                 <div className={styles.subTitle}>Введите данные</div>
@@ -155,14 +156,14 @@ export const Player = () => {
                               placeholder={"Расскажите о себе"}/>
                     <div className={styles.checkbox}>
                         <input {...formik.getFieldProps('shengen')}
-                               className={styles.checkbox} type={'checkbox'}/>
+                               className={styles.check} type={'checkbox'}/>
                         <div className={styles.assent}>
                             Наличие шенгена
                         </div>
                     </div>
                     <div className={styles.checkbox}>
                         <input {...formik.getFieldProps('is_show')}
-                               className={styles.checkbox} type={'checkbox'}/>
+                               className={styles.check} type={'checkbox'}/>
                         <div className={styles.assent}>
                             Отображать всем
                         </div>

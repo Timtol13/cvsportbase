@@ -33,42 +33,88 @@ export const Trainer = () => {
     })
 
     return (
-        <form onSubmit={formik.handleSubmit} className={styles.form}>
-            <label className={styles.input_file}>
-                <span>+</span>
-                <input type={'file'} onChange={(e : any) => {
-                    const formData = new FormData()
-                    const api = 'http://127.0.0.1:8000/'
-                    let token = sessionStorage.getItem('tokenData');
-                    formData.append('image', e.target.files[0], e.target.files[0].name)
-                    formData.append('token', JSON.parse(token? token : '').access)
-                    axios.post(`${api}ProfilePhoto/`, formData).then((res) => {console.log(res)})
-                }
-                } className={styles.files}/>
-            </label>
-            <div className={styles.inputs}>
-                <input {...formik.getFieldProps('first_name')} placeholder={'Имя'} />
-                <input {...formik.getFieldProps('second_name')} placeholder={'Фамилия'} />
-                <input {...formik.getFieldProps('patronymic')} placeholder={'Отчество'} />
-                <input {...formik.getFieldProps('age')} placeholder={'Возраст'} />
-                <input {...formik.getFieldProps('phone')} placeholder={'Телефон'} />
-                <input {...formik.getFieldProps('email')} placeholder={'E-mail'} />
-                <input {...formik.getFieldProps('country')} placeholder={'Страна'} />
-                <input {...formik.getFieldProps('city')} placeholder={'Город'} />
-                <input {...formik.getFieldProps('phone_s')} placeholder={'Телефон школы'} />
-                <input {...formik.getFieldProps('email_s')} placeholder={'E-mail школы'} />
-                <input {...formik.getFieldProps('country_s')} placeholder={'Страна, в которой находиться школа'} />
-                <input {...formik.getFieldProps('city_s')} placeholder={'Город, в котором находиться школа'} />
-                <label>
-                    <input {...formik.getFieldProps('is_show')} type={'checkbox'} />
-                    Показывать всем
+        <div className={styles.role}>
+            <div className={styles.files}>
+                <label className={styles.input_file}>
+                    <span>+</span>
+                    <input type={'file'} onChange={(e: any) => {
+                        const formData = new FormData()
+                        const api = 'http://127.0.0.1:8000/'
+                        let token = sessionStorage.getItem('tokenData');
+                        formData.append('image', e.target.files[0], e.target.files[0].name)
+                        formData.append('token', JSON.parse(token ? token : '').access)
+                        axios.post(`${api}ProfilePhoto/`, formData).then((res) => {
+                            console.log(res)
+                        })
+                    }
+                    } className={styles.files}/>
                 </label>
                 <label className={styles.input_file}>
-                    <span>Фото школы<br />+</span>
-                    <input {...formik.getFieldProps('photo')} type={'file'} className={styles.files} />
-                </label>
-                <button type="submit">Добавить</button>
-            </div>
-        </form>
+                    <span>Фото школы<br/>+</span>
+                    <input {...formik.getFieldProps('photo')} type={'file'} className={styles.files}/>
+                </label></div>
+            <form onSubmit={formik.handleSubmit} className={styles.form}>
+                <div className={styles.title}>Тренер</div>
+                <div className={styles.subTitle}>Введите данные</div>
+                <div className={styles.inputs}>
+                    <div className={styles.label}>
+                        <div className={styles.labelTitle}>Имя</div>
+                        <input className={styles.input} {...formik.getFieldProps('first_name')}/>
+                    </div>
+                    <div className={styles.label}>
+                        <div className={styles.labelTitle}>Фамилия</div>
+                        <input className={styles.input} {...formik.getFieldProps('second_name')}/>
+                    </div>
+                    <div className={styles.label}>
+                        <div className={styles.labelTitle}>Отчество</div>
+                        <input className={styles.input} {...formik.getFieldProps('patronymic')}/>
+                    </div>
+                    <div className={styles.label}>
+                        <div className={styles.labelTitle}>Возраст</div>
+                        <input className={styles.input} {...formik.getFieldProps('age')}/>
+                    </div>
+                    <div className={styles.label}>
+                        <div className={styles.labelTitle}>Телефон</div>
+                        <input className={styles.input} {...formik.getFieldProps('phone')}/>
+                    </div>
+                    <div className={styles.label}>
+                        <div className={styles.labelTitle}>E-mail</div>
+                        <input className={styles.input} {...formik.getFieldProps('email')}/>
+                    </div>
+                    <div className={styles.label}>
+                        <div className={styles.labelTitle}>Страна</div>
+                        <input className={styles.input} {...formik.getFieldProps('country')}/>
+                    </div>
+                    <div className={styles.label}>
+                        <div className={styles.labelTitle}>Город</div>
+                        <input className={styles.input} {...formik.getFieldProps('city')}/>
+                    </div>
+                    <div className={styles.label}>
+                        <div className={styles.labelTitle}>Телефон школы</div>
+                        <input className={styles.input} {...formik.getFieldProps('phone_s')}/>
+                    </div>
+                    <div className={styles.label}>
+                        <div className={styles.labelTitle}>E-mail школы</div>
+                        <input className={styles.input} {...formik.getFieldProps('email_s')}/>
+                    </div>
+                    <div className={styles.label}>
+                        <div className={styles.labelTitle}>Страна, в которой находиться школа</div>
+                        <input className={styles.input} {...formik.getFieldProps('country_s')}/>
+                    </div>
+                    <div className={styles.label}>
+                        <div className={styles.labelTitle}>Город, в котором находиться школа</div>
+                        <input className={styles.input} {...formik.getFieldProps('city_s')}/>
+                    </div>
+                    <div className={styles.label_checkbox}>
+                        <input {...formik.getFieldProps('is_show')} type={'checkbox'}/>
+                        <div className={styles.assent}>Показывать всем</div>
+                    </div>
+                </div>
+
+                <div className={styles.info}>
+                    <button className={styles.button} type="submit">Добавить</button>
+                </div>
+            </form>
+        </div>
     )
 }
