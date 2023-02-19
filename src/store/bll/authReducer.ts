@@ -28,12 +28,13 @@ export const registrationTC = createAsyncThunk(
 
 export const loginTC = createAsyncThunk(
     'login',
-    async (data: {username: string, email: string, password: string, role: string}, { dispatch }) => {
+    async (data: {username: string, password: string, role: string}, { dispatch }) => {
         dispatch(setAppStatus(requestStatus.LOADING))
         try {
             console.log(data)
             const res = await authAPI.login(data)
             localStorage.setItem('role', data.role)
+            dispatch(setMe(res))
             dispatch(changeLoggedIn(true))
             dispatch(setAppStatus(requestStatus.SUCCEEDED))
         } catch (err) {
@@ -41,6 +42,20 @@ export const loginTC = createAsyncThunk(
             dispatch(setAppStatus(requestStatus.FAILED))
         }
     }
+)
+
+export const uploadPhotoTC = createAsyncThunk(
+    'uploadPhoto',
+    async (params: {photo: string, user: string}, {dispatch}) => {
+        dispatch(setAppStatus(requestStatus.LOADING))
+        try {
+            const res = await authAPI.photoUpload({photo: params.photo, user: params.user})
+            dispatch(setAppStatus(requestStatus.SUCCEEDED))
+        } catch (err) {
+            handleError(err, dispatch)
+            dispatch(setAppStatus(requestStatus.FAILED))
+        }
+}
 )
 
 export const  advanceTC = createAsyncThunk(

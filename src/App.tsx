@@ -12,7 +12,7 @@ export const App = () => {
             'Content-Type': 'application/json'
         }
     }
-    setTimeout(()=>{return fetchWithAuth('api/refreshToken', options)}, 86400000)
+    setTimeout(()=>{return fetchWithAuth('login/refresh', options)}, 86400000)
   return (
     <div>
         <Main />

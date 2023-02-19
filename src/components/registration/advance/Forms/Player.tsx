@@ -1,27 +1,24 @@
-import React, {useState} from 'react'
+import React, {ChangeEvent, useState} from 'react'
 import styles from './Forms.module.scss'
 import Select, {OnChangeValue} from 'react-select'
 import {useAppDispatch} from "../../../../hooks/hooks"
-import {advanceTC} from "../../../../store/bll/authReducer"
+import {advanceTC, uploadPhotoTC} from "../../../../store/bll/authReducer"
 import {useFormik} from "formik"
 import {useNavigate} from "react-router"
-import {authAPI} from "../../../../api/api";
-import axios from "axios";
 
 type PositionsType = {
     value: number
     label: string
     isFixed?: boolean
 }
-let token = sessionStorage.getItem('tokenData');
-
+let user = localStorage.getItem('username')
+const minFileSize = 1000;
 export const Player = () => {
     const dispatch = useAppDispatch()
     const nav = useNavigate()
 
     const [leg, setLeg] =  useState('')
     const [position, setPosition] =  useState<PositionsType[]>([])
-    const [image, setImage] = useState<any>()
     const api = 'http://127.0.0.1:8000/'
 
     const positions = [
@@ -71,18 +68,34 @@ export const Player = () => {
     const onChange = (newValue: OnChangeValue<PositionsType, true>,) => {
         setPosition(orderOptions(newValue));
     };
+    const uploadHandler = (e: ChangeEvent<HTMLInputElement>): void => {
+        if (e.target.files && e.target.files.length) {
+            const file = e.target.files[0];
+            if (file.size > minFileSize) {
+                convertFileToBase64(file, (file64: string) => {
+                    dispatch(uploadPhotoTC({ photo: file64, user: `${user}` }));
+                });
+            }
+        }
+    };
+    const convertFileToBase64 = (file: File, callBack: (value: string) => void): void => {
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+            const file64 = reader.result as string;
+            callBack(file64);
+        };
+        reader.readAsDataURL(file);
+    };
     return (
         <>
             <form onSubmit={formik.handleSubmit} className={styles.form}>
                 <label className={styles.input_file}>
                     <span>+</span>
-                    <input type={'file'} onChange={(e : any) => {
-                        const formData = new FormData()
-                        formData.append('image', e.target.files[0], e.target.files[0].name)
-                        formData.append('token', JSON.parse(token? token : '').access)
-                        axios.post(`${api}ProfilePhoto/`, formData).then((res) => {console.log(res)})
-                    }
-                    } className={styles.files}/>
+                    <input type="file"
+                           accept="image/*"
+                           onChange={uploadHandler}
+                           className={styles.files}/>
                 </label>
                 <div className={styles.inputs}>
                     <input {...formik.getFieldProps('first_name')} placeholder={'Имя'}/>
