@@ -1,23 +1,35 @@
 .header {
   display: flex;
+  position: fixed;
   justify-content: space-between;
   align-items: center;
   color: #FFFFFF;
   width: 90%;
   height: 80px;
-  margin: 0 auto;
+  margin: 0 5%;
   .logo {
+    @media (max-width: 425px) {
+      width: 160px;
+    }
     .CV {
       font-style: normal;
       font-weight: 700;
       font-size: 32px;
       line-height: 39px;
+      @media (max-width: 425px) {
+        font-size: 20px;
+        line-height: 24px;
+      }
     }
     .subTitle {
       font-style: normal;
       font-weight: 600;
       font-size: 14px;
       line-height: 17px;
+      @media (max-width: 425px) {
+        font-size: 12px;
+        line-height: 15px;
+      }
     }
   }
   .icons {

@@ -33,7 +33,7 @@ export const authAPI = {
         return instanceDefault.post(`registration/`, data).then(() => {return this.login(data)})
     },
     photoUpload(data: {photo: string, user: string}){
-        return instancePhoto.post(`/api/add/photo/`, data)
+        return instancePhoto.post(`/api/add/photo/`, {data})
     },
     login(data: { username: string, password: string }) {
         return instanceDefault.post(`${api}login/`, data,)

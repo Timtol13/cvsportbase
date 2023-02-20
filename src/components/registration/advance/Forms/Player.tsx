@@ -12,7 +12,7 @@ type PositionsType = {
     isFixed?: boolean
 }
 let user = localStorage.getItem('username')
-const maxFileSize = 40000;
+const maxFileSize = 1000000;
 export const Player = () => {
     const dispatch = useAppDispatch()
     const nav = useNavigate()
