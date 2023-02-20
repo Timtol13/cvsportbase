@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 import {AdvanceFormType, RegistrationFormType} from "./RequestType";
 
 let token = sessionStorage.getItem('tokenData')
@@ -14,42 +14,35 @@ const instance = axios.create({
     },
 })
 const instancePhoto = axios.create({
-    baseURL: `${api}/add/photo/`,
+    baseURL: `${api}`,
     withCredentials: true,
     headers: {
-        "Content-Type": "multipart/form-data",
+        'Authorization': `Bearer ${token ? JSON.parse(token).access : ''}`,
+        'Content-Type': 'multipart/form-data',
     }
+})
+const instanceDefault = axios.create({
+    baseURL: `${api}`,
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    },
 })
 export const authAPI = {
     registration(data: RegistrationFormType) {
-        return fetch(`${api}registration/`, {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-        }).then(() => {
-            this.login(data).then(r => console.log(`isLogged ${r}`))
-        })
+        return instanceDefault.post(`registration/`, data).then(() => {return this.login(data)})
     },
-    login(data: { username: string, email: string, password: string }) {
-        return fetch(`${api}login/`, {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }).then(((res) => {
+    photoUpload(data: {photo: string, user: string}){
+        return instancePhoto.post(`/api/add/photo/`, data)
+    },
+    login(data: { username: string, password: string }) {
+        return instanceDefault.post(`${api}login/`, data,)
+            .then(((res :AxiosResponse<Response>) => {
                     if (res.status === 200) {
-                        const tokenData = res.json();
+                        const tokenData = res.data;
                         console.log(`Bearer ${token}`)
-                        tokenData.then((res) => {
-                            sessionStorage.setItem('tokenData', JSON.stringify(res));
-                        })
+                        tokenData.json().then((res) => {sessionStorage.setItem('tokenData', res?.access)})
+                        localStorage.setItem('username', data.username)
                         console.log("isLogged")
                         return Promise.resolve()
                     }

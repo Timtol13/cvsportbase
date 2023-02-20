@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {loginTC} from "../../store/bll/authReducer";
-import './Registration.module.scss'
+import './Registration.modul.scss'
 import {useAppDispatch} from "../../hooks/hooks";
 import {useFormik} from "formik";
 import {useNavigate} from "react-router";
@@ -11,17 +11,16 @@ export const Login = () => {
     const [role, setRole] = useState('')
     const nav = useNavigate()
     const formik = useFormik({
-            initialValues: {
-                username: '',
-                email: '',
-                password: '',
-            },
-            onSubmit: values => {
-                dispatch(loginTC({...values, role})).then(() => {
-                    return nav('/home')
-                })
-            }
+        initialValues: {
+            username: '',
+            password: '',
+        },
+        onSubmit: values => {
+            const token = sessionStorage.getItem('tokenData')
+            console.log(`${(!token ? '' : JSON.parse(token).access)}`)
+            dispatch(loginTC({...values, role})).then(() => {return nav('/home')})
         }
+    }
     )
     return (
         <div className={styles.cont}>
