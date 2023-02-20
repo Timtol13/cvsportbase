@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import {useParams} from 'react-router'
 import {getAPI} from '../../api/api'
-import {MainModal} from '../Modal/MainModal/MainModal'
 import './Profile.module.scss'
 import {AdvanceFormType} from "../../api/RequestType";
 export const Profile = () => {

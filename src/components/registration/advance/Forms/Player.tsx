@@ -12,14 +12,13 @@ type PositionsType = {
     isFixed?: boolean
 }
 let user = localStorage.getItem('username')
-const minFileSize = 1000;
+const maxFileSize = 40000;
 export const Player = () => {
     const dispatch = useAppDispatch()
     const nav = useNavigate()
 
-    const [leg, setLeg] =  useState('')
-    const [position, setPosition] =  useState<PositionsType[]>([])
-    const api = 'http://127.0.0.1:8000/'
+    const [leg, setLeg] = useState('')
+    const [position, setPosition] = useState<PositionsType[]>([])
 
     const positions = [
         {value: 1, label: "Вратарь"},
@@ -69,16 +68,7 @@ export const Player = () => {
     const onChange = (newValue: OnChangeValue<PositionsType, true>,) => {
         setPosition(orderOptions(newValue));
     };
-    const uploadHandler = (e: ChangeEvent<HTMLInputElement>): void => {
-        if (e.target.files && e.target.files.length) {
-            const file = e.target.files[0];
-            if (file.size > minFileSize) {
-                convertFileToBase64(file, (file64: string) => {
-                    dispatch(uploadPhotoTC({ photo: file64, user: `${user}` }));
-                });
-            }
-        }
-    };
+
     const convertFileToBase64 = (file: File, callBack: (value: string) => void): void => {
         const reader = new FileReader();
 
@@ -88,16 +78,32 @@ export const Player = () => {
         };
         reader.readAsDataURL(file);
     };
+    const uploadHandler = (e: ChangeEvent<HTMLInputElement>): void => {
+        if (e.target.files && e.target.files.length) {
+            const file = e.target.files[0];
+            if (file.size < maxFileSize) {
+                convertFileToBase64(file, (file64: string) => {
+                    dispatch(uploadPhotoTC({photo: file64, user: `${user}`}));
+                });
+            }
+        }
+    };
+
     return (
         <div className={styles.role}>
             <div className={styles.files}>
-                <label className={styles.input_file}>
+                <label className={styles.input_file} htmlFor="button-photo">
                     <span>+</span>
                     <input type="file"
                            accept="image/*"
                            onChange={uploadHandler}
-                           className={styles.files}/>
+                           className={styles.files}
+                           id="button-photo"/>
                 </label>
+            </div>
+            <form onSubmit={formik.handleSubmit} className={styles.form}>
+                <div className={styles.title}>Игрок</div>
+                <div className={styles.subTitle}>Введите данные</div>
                 <div className={styles.inputs}>
                     <div className={styles.label}>
                         <div className={styles.labelTitle}>Имя</div>

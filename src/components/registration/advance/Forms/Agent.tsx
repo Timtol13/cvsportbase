@@ -47,7 +47,8 @@ export const Agent = () => {
                         })
                     }
                     } className={styles.files}/>
-                </label></div>
+                </label>
+            </div>
             <form onSubmit={formik.handleSubmit} className={styles.form}>
                 <div className={styles.title}>Агент</div>
                 <div className={styles.subTitle}>Введите данные</div>
