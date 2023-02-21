@@ -15,8 +15,6 @@ export const Login = () => {
             password: '',
         },
         onSubmit: values => {
-            const token = sessionStorage.getItem('tokenData')
-            console.log(`${(!token ? '' : JSON.parse(token).access)}`)
             dispatch(loginTC({...values, role})).then(() => {return nav('/home')})
         }
     }

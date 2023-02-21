@@ -1,23 +1,22 @@
 import axios, {AxiosResponse} from "axios";
 import {AdvanceFormType, RegistrationFormType} from "./RequestType";
 
-let token = sessionStorage.getItem('tokenData')
+let token = localStorage.getItem('app-state')
 const api = 'http://127.0.0.1:8000/'
-
 const instance = axios.create({
     baseURL: `${api}api/`,
     withCredentials: true,
     headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': `Bearer ${token ? JSON.parse(token).access : ''}`
+        'Authorization': `Bearer ${token ? JSON.parse(token).auth.me.token.access : ''}`
     },
 })
 const instancePhoto = axios.create({
     baseURL: `${api}`,
     withCredentials: true,
     headers: {
-        'Authorization': `Bearer ${token ? JSON.parse(token).access : ''}`,
+        'Authorization': `Bearer ${token ? JSON.parse(token).auth.me.token.access : ''}`,
         'Content-Type': 'multipart/form-data',
     }
 })
@@ -28,38 +27,20 @@ const instanceDefault = axios.create({
         'Content-Type': 'application/json'
     },
 })
+
 export const authAPI = {
     registration(data: RegistrationFormType) {
-        return instanceDefault.post(`registration/`, data).then(() => {return this.login(data)})
+        return instanceDefault.post(`registration/`, data)
     },
     photoUpload(data: {photo: string, user: string}){
-        return instancePhoto.post(`/api/add/photo/`, {data})
+        return instancePhoto.post(`api/add/photo/`, data)
     },
     login(data: { username: string, password: string }) {
-        return instanceDefault.post(`${api}login/`, data,)
-            .then(((res :AxiosResponse<Response>) => {
-                    if (res.status === 200) {
-                        const tokenData = res.data;
-                        console.log(`Bearer ${token}`)
-                        tokenData.json().then((res) => {sessionStorage.setItem('tokenData', res?.access)})
-                        localStorage.setItem('username', data.username)
-                        console.log("isLogged")
-                        return Promise.resolve()
-                    }
-                    if (res.status === 400) {
-                        return console.log("Uncorrect data")
-                    }
-                    return Promise.reject();
-                }
-            )
-        )
+        return instanceDefault.post(`login/`, data)
     },
     advance(role: string, data: AdvanceFormType) {
         return instance.post<AdvanceFormType>(`advanced/${role}/`, data)
     },
-    createPhoto(photo: File) {
-        return instancePhoto.post<File>('', photo)
-    }
 }
 export const getAPI = {
     getRole(role: string | undefined, first_name: string | undefined, second_name: string | undefined, patronymic: string | undefined) {
@@ -68,10 +49,6 @@ export const getAPI = {
     getVideos() {
         return instance.get('add/video/')
     }
-}
-
-function saveToken(token: any) {
-    sessionStorage.setItem('tokenData', JSON.stringify(token));
 }
 
 const refreshToken = (token: any) => {
@@ -106,7 +83,7 @@ export async function fetchWithAuth(url?: any, options?: any) {
     let tokenData = null
     const loginUrl = '/login';
 
-    if (sessionStorage.authToken) {
+    if (localStorage.authToken) {
         tokenData = JSON.parse(localStorage.tokenData);
     } else {
         return window.location.replace(loginUrl);
@@ -120,7 +97,6 @@ export async function fetchWithAuth(url?: any, options?: any) {
         if (Date.now() >= tokenData.expires_on * 1000) {
             try {
                 const newToken = await refreshToken(tokenData.refresh_token);
-                saveToken(newToken);
             } catch (Error) {
                 return window.location.replace(loginUrl);
             }

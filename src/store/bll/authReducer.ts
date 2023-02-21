@@ -17,8 +17,10 @@ export const registrationTC = createAsyncThunk(
         console.log(data)
       const res = await authAPI.registration(data)
         localStorage.setItem('role', data.role)
+        dispatch(loginTC(data))
       dispatch(changeLoggedIn(true))
       dispatch(setAppStatus(requestStatus.SUCCEEDED))
+
     } catch (err) {
       handleError(err, dispatch)
       dispatch(setAppStatus(requestStatus.FAILED))
@@ -33,8 +35,8 @@ export const loginTC = createAsyncThunk(
         try {
             console.log(data)
             const res = await authAPI.login(data)
-            localStorage.setItem('role', data.role)
-            dispatch(setMe(res))
+            console.log(res.data)
+            dispatch(setMe({id: 0, username: data.username, role: data.role, token: res.data}))
             dispatch(changeLoggedIn(true))
             dispatch(setAppStatus(requestStatus.SUCCEEDED))
         } catch (err) {
@@ -46,7 +48,7 @@ export const loginTC = createAsyncThunk(
 
 export const uploadPhotoTC = createAsyncThunk(
     'uploadPhoto',
-    async (params: {photo: string, user: string}, {dispatch}) => {
+    async (params: {photo: any, user: any}, {dispatch}) => {
         dispatch(setAppStatus(requestStatus.LOADING))
         try {
             const res = await authAPI.photoUpload({photo: params.photo, user: params.user})
@@ -80,7 +82,8 @@ const slice = createSlice({
     me: {
       id: 1,
       username: '',
-      email: ''
+      email: '',
+        token: ''
     },
     lng: 'ru',
     isLoggedIn: false,
