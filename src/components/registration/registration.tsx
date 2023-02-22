@@ -18,7 +18,7 @@ export const Registration = () => {
 
         onSubmit: values => {
             dispatch(registrationTC({...values, role})).then(() => {
-                return nav('/home')
+                return nav(`/advance/${role}`)
             })
         },
     })

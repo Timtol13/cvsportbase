@@ -35,6 +35,9 @@ export const authAPI = {
     photoUpload(data: {photo: string, user: string}){
         return instancePhoto.post(`api/add/photo/`, data)
     },
+    videoUpload(data: {video: string, user: string}){
+        return instancePhoto.post(`api/add/video/`, data)
+    },
     login(data: { username: string, password: string }) {
         return instanceDefault.post(`login/`, data)
     },

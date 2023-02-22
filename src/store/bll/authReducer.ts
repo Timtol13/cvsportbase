@@ -46,6 +46,20 @@ export const loginTC = createAsyncThunk(
     }
 )
 
+export const addVideoTC = createAsyncThunk(
+    'uploadVideo',
+    async (params: {video: any, user: any}, {dispatch}) => {
+        dispatch(setAppStatus(requestStatus.LOADING))
+        try{
+            const res = await authAPI.videoUpload({video: params.video, user: params.user})
+            dispatch(setAppStatus(requestStatus.SUCCEEDED))
+        } catch (err) {
+            handleError(err, dispatch)
+            dispatch(setAppStatus(requestStatus.FAILED))
+        }
+    }
+)
+
 export const uploadPhotoTC = createAsyncThunk(
     'uploadPhoto',
     async (params: {photo: any, user: any}, {dispatch}) => {
