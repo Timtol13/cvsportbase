@@ -50,7 +50,10 @@ export const getAPI = {
         return instance.get(`advanced/${role}/?search=${first_name}+${second_name}+${patronymic}`)
     },
     getVideos() {
-        return instance.get('add/video/')
+        return instance.get('api/add/video/')
+    },
+    getPhoto(user: string){
+        return instancePhoto.get(`api/add/photo/${user}/`)
     }
 }
 
