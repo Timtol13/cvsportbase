@@ -31,7 +31,6 @@ export const loginTC = createAsyncThunk(
     async (data: {username: string, password: string, role: string}, { dispatch }) => {
         dispatch(setAppStatus(requestStatus.LOADING))
         try {
-            console.log(data)
             const res = await authAPI.login(data)
             localStorage.setItem('role', data.role)
             dispatch(setMe(res))

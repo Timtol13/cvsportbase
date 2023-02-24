@@ -38,6 +38,19 @@
       border: none;
       transition: background-color .2s;
     }
+    img {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 70px;
+      text-decoration: none;
+      text-align: center;
+      margin: 0 auto;
+      border-radius: 10px;
+      width: 80%;
+      border: none;
+      transition: background-color .2s;
+    }
 
     &:hover {
       span {

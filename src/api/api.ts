@@ -36,23 +36,7 @@ export const authAPI = {
         return instancePhoto.post(`/api/add/photo/`, {data})
     },
     login(data: { username: string, password: string }) {
-        return instanceDefault.post(`${api}login/`, data,)
-            .then(((res :AxiosResponse<Response>) => {
-                    if (res.status === 200) {
-                        const tokenData = res.data;
-                        console.log(`Bearer ${token}`)
-                        tokenData.json().then((res) => {sessionStorage.setItem('tokenData', res?.access)})
-                        localStorage.setItem('username', data.username)
-                        console.log("isLogged")
-                        return Promise.resolve()
-                    }
-                    if (res.status === 400) {
-                        return console.log("Uncorrect data")
-                    }
-                    return Promise.reject();
-                }
-            )
-        )
+        return instanceDefault.post(`${api}login/`, data)
     },
     advance(role: string, data: AdvanceFormType) {
         return instance.post<AdvanceFormType>(`advanced/${role}/`, data)

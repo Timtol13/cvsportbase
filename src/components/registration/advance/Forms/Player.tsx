@@ -19,7 +19,7 @@ export const Player = () => {
 
     const [leg, setLeg] = useState('')
     const [position, setPosition] = useState<PositionsType[]>([])
-
+    const [photo, setPhoto] = useState<any>(null)
     const positions = [
         {value: 1, label: "Вратарь"},
         {value: 2, label: "Центральный защитник"},
@@ -84,6 +84,7 @@ export const Player = () => {
             if (file.size < maxFileSize) {
                 convertFileToBase64(file, (file64: string) => {
                     dispatch(uploadPhotoTC({photo: file64, user: `${user}`}));
+                    setPhoto(file64)
                 });
             }
         }
@@ -93,7 +94,7 @@ export const Player = () => {
         <div className={styles.role}>
             <div className={styles.files}>
                 <label className={styles.input_file} htmlFor="button-photo">
-                    <span>+</span>
+                    {photo ? <img src={photo} alt=""/> : <span>+</span>}
                     <input type="file"
                            accept="image/*"
                            onChange={uploadHandler}
