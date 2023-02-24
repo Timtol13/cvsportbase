@@ -2,8 +2,9 @@
   position: absolute;
   margin-top: 100px;
   color: #fff;
+  .ProfilePhoto{
+    width: 150px;
+    border-radius: 20px;
+  }
 }
-.profile_photo{
-  max-width: 200px;
-  border-radius: 20px;
-}
+

@@ -7,6 +7,7 @@ export const Profile = () => {
     const {role, first_name, second_name, patronymic} = useParams()
     const  [ roleData, setRoleData] = useState<AdvanceFormType>()
     const [image, setImage] = useState()
+    const api = 'http://127.0.0.1:8000'
     const us = localStorage.getItem('app-state')
     const user = JSON.parse(us? us : '').auth.me.username
     useEffect(() => {
@@ -15,7 +16,14 @@ export const Profile = () => {
     }, [])
     return (
         <div className={styles.container}>
-            <img src={`${window.location.origin}${image?.photo}`} alt={'Wait'} />
+            <nav>
+                <ul>
+                    <li>
+                        <img src={'media/user/user_circle.png'} />Мой профиль
+                    </li>
+                </ul>
+            </nav>
+            {/*<img className={styles.ProfilePhoto} src={`${api}${image?.photo}`} alt={'Wait'}/>*/}
             <h3>{roleData?.first_name} {roleData?.second_name} {roleData?.patronymic}</h3>
         </div>
     )
