@@ -6,6 +6,21 @@ export type RegistrationFormType = {
     password: string
     role: string
 }
+export type AdvancePutFormType = {
+    first_name: string,
+    second_name: string,
+    patronymic: string,
+    phone: string,
+    email: string,
+    country: string,
+    city: string,
+    is_show: boolean,
+    leg?: string,
+    height?: string,
+    weight?: string,
+    shengen?: boolean,
+    position?: any,
+}
 export type AdvanceFormType = {
     first_name: string,
     second_name: string,

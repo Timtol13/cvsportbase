@@ -5,8 +5,8 @@ import {handleError} from '../../utils/handleError'
 
 import {setAppStatus} from './appReducer'
 
-import {authAPI} from '../../api/api'
-import {AdvanceFormType, RegistrationFormType} from "../../api/RequestType";
+import {authAPI, putAPI} from '../../api/api'
+import {AdvanceFormType, AdvancePutFormType, RegistrationFormType} from "../../api/RequestType";
 
 //THUNKS
 export const registrationTC = createAsyncThunk(
@@ -38,6 +38,22 @@ export const loginTC = createAsyncThunk(
             console.log(res.data)
             dispatch(setMe({id: 0, username: data.username, role: data.role, token: res.data}))
             dispatch(changeLoggedIn(true))
+            dispatch(setAppStatus(requestStatus.SUCCEEDED))
+        } catch (err) {
+            handleError(err, dispatch)
+            dispatch(setAppStatus(requestStatus.FAILED))
+        }
+    }
+)
+
+export const advancePutTC = createAsyncThunk(
+    'advancePut',
+    async (params: {role:string, data: AdvancePutFormType}, { dispatch }) => {
+        dispatch(setAppStatus(requestStatus.LOADING))
+        try {
+            console.log(params.data)
+            const res = await putAPI.putAdvance(params.role, params.data)
+            localStorage.setItem('user', '')
             dispatch(setAppStatus(requestStatus.SUCCEEDED))
         } catch (err) {
             handleError(err, dispatch)

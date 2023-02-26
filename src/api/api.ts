@@ -1,5 +1,5 @@
 import axios, {AxiosResponse} from "axios";
-import {AdvanceFormType, RegistrationFormType} from "./RequestType";
+import {AdvanceFormType, AdvancePutFormType, RegistrationFormType} from "./RequestType";
 
 let token = localStorage.getItem('app-state')
 const api = 'http://127.0.0.1:8000/'
@@ -55,6 +55,15 @@ export const getAPI = {
     getPhoto(user: string){
         return instancePhoto.get(`api/add/photo/${user}/`)
     }
+}
+
+export const putAPI = {
+    putPhoto(data: {photo: string, user: string}){
+        return instancePhoto.put(`api/add/photo/`, data)
+    },
+    putAdvance(role: string, data: AdvancePutFormType) {
+        return instance.put<AdvanceFormType>(`advanced/${role}/`, data)
+    },
 }
 
 const refreshToken = (token: any) => {
