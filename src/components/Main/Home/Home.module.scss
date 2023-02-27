@@ -47,6 +47,37 @@
         position: absolute;
         top: 49px;
 
+
+        .subInputL {
+          background: #C8D7FD;
+          color: #021033;
+          width: 100px;
+          height: 26px;
+          border: none;
+          margin-right: 1px;
+          font-style: normal;
+          font-weight: 600;
+          font-size: 13px;
+          line-height: 16px;
+          text-align: center;
+          border-radius: 10px 0 0 10px;
+        }
+        .subInputR {
+          background: #C8D7FD;
+          color: #021033;
+          width: 100px;
+          height: 26px;
+          border: none;
+          margin-right: 1px;
+          font-style: normal;
+          font-weight: 600;
+          font-size: 13px;
+          line-height: 16px;
+          text-align: center;
+          border-radius: 0 10px 10px 0;
+        }
+
+
         .subLink {
           background: #C8D7FD;
           color: #021033;

@@ -72,11 +72,10 @@ export const Home = () => {
                         </button>
                     </NavLink>
                     {active === 'age'
-                        ? <div className={styles.subButtons}>
-                            <input className={isActiveSubButton('age1')} placeholder={'От'}/>
-                            <input className={isActiveSubButton('age1')} placeholder={'До'}/>
-                        </div>
-                        : null
+                        && (<div className={styles.subButtons}>
+                            <input className={styles.subInputL} type={"number"} placeholder={'От'}/>
+                            <input className={styles.subInputR} type={"number"} placeholder={'До'}/>
+                        </div>)
                     }
                 </div>
                 <div className={styles.linkContainer}>
@@ -86,11 +85,10 @@ export const Home = () => {
                         </button>
                     </NavLink>
                     {active === 'weight'
-                        ? <div className={styles.subButtons}>
-                            <input className={isActiveSubButton('weight1')} placeholder={'От'}/>
-                            <input className={isActiveSubButton('weight1')} placeholder={'До'}/>
-                        </div>
-                        : null
+                        && (<div className={styles.subButtons}>
+                            <input className={styles.subInputL} type={"number"} placeholder={'От'}/>
+                            <input className={styles.subInputR} type={"number"} placeholder={'До'}/>
+                        </div>)
                     }
                 </div>
                 <div className={styles.linkContainer}>
@@ -100,11 +98,10 @@ export const Home = () => {
                         </button>
                     </NavLink>
                     {active === 'height'
-                        ? <div className={styles.subButtons}>
-                            <input className={isActiveSubButton('height1')} placeholder={'От'}/>
-                            <input className={isActiveSubButton('height1')} placeholder={'До'}/>
-                        </div>
-                        : null
+                        && (<div className={styles.subButtons}>
+                            <input className={styles.subInputL} type={"number"} placeholder={'От'}/>
+                            <input className={styles.subInputR} type={"number"} placeholder={'До'}/>
+                        </div>)
                     }
                 </div>
                 <div className={styles.linkContainer}>
