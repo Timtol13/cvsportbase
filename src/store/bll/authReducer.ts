@@ -5,8 +5,8 @@ import {handleError} from '../../utils/handleError'
 
 import {setAppStatus} from './appReducer'
 
-import {authAPI} from '../../api/api'
-import {AdvanceFormType, RegistrationFormType} from "../../api/RequestType";
+import {authAPI, putAPI} from '../../api/api'
+import {AdvanceFormType, AdvancePutFormType, RegistrationFormType} from "../../api/RequestType";
 
 //THUNKS
 export const registrationTC = createAsyncThunk(
@@ -17,8 +17,10 @@ export const registrationTC = createAsyncThunk(
         console.log(data)
       const res = await authAPI.registration(data)
         localStorage.setItem('role', data.role)
+        dispatch(loginTC(data))
       dispatch(changeLoggedIn(true))
       dispatch(setAppStatus(requestStatus.SUCCEEDED))
+
     } catch (err) {
       handleError(err, dispatch)
       dispatch(setAppStatus(requestStatus.FAILED))
@@ -32,9 +34,39 @@ export const loginTC = createAsyncThunk(
         dispatch(setAppStatus(requestStatus.LOADING))
         try {
             const res = await authAPI.login(data)
-            localStorage.setItem('role', data.role)
-            dispatch(setMe(res))
+            console.log(res.data)
+            dispatch(setMe({id: 0, username: data.username, role: data.role, token: res.data}))
             dispatch(changeLoggedIn(true))
+            dispatch(setAppStatus(requestStatus.SUCCEEDED))
+        } catch (err) {
+            handleError(err, dispatch)
+            dispatch(setAppStatus(requestStatus.FAILED))
+        }
+    }
+)
+
+export const advancePutTC = createAsyncThunk(
+    'advancePut',
+    async (params: {role:string, data: AdvancePutFormType}, { dispatch }) => {
+        dispatch(setAppStatus(requestStatus.LOADING))
+        try {
+            console.log(params.data)
+            const res = await putAPI.putAdvance(params.role, params.data)
+            localStorage.setItem('user', '')
+            dispatch(setAppStatus(requestStatus.SUCCEEDED))
+        } catch (err) {
+            handleError(err, dispatch)
+            dispatch(setAppStatus(requestStatus.FAILED))
+        }
+    }
+)
+
+export const addVideoTC = createAsyncThunk(
+    'uploadVideo',
+    async (params: {video: any, user: any}, {dispatch}) => {
+        dispatch(setAppStatus(requestStatus.LOADING))
+        try{
+            const res = await authAPI.videoUpload({video: params.video, user: params.user})
             dispatch(setAppStatus(requestStatus.SUCCEEDED))
         } catch (err) {
             handleError(err, dispatch)
@@ -45,7 +77,7 @@ export const loginTC = createAsyncThunk(
 
 export const uploadPhotoTC = createAsyncThunk(
     'uploadPhoto',
-    async (params: {photo: string, user: string}, {dispatch}) => {
+    async (params: {photo: any, user: any}, {dispatch}) => {
         dispatch(setAppStatus(requestStatus.LOADING))
         try {
             const res = await authAPI.photoUpload({photo: params.photo, user: params.user})
@@ -79,7 +111,8 @@ const slice = createSlice({
     me: {
       id: 1,
       username: '',
-      email: ''
+      email: '',
+        token: ''
     },
     lng: 'ru',
     isLoggedIn: false,

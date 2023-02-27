@@ -11,8 +11,7 @@ type PositionsType = {
     label: string
     isFixed?: boolean
 }
-let user = localStorage.getItem('username')
-const maxFileSize = 1000000;
+let user = localStorage.getItem('app-state')
 export const Player = () => {
     const dispatch = useAppDispatch()
     const nav = useNavigate()
@@ -69,23 +68,15 @@ export const Player = () => {
         setPosition(orderOptions(newValue));
     };
 
-    const convertFileToBase64 = (file: File, callBack: (value: string) => void): void => {
-        const reader = new FileReader();
-
-        reader.onloadend = () => {
-            const file64 = reader.result as string;
-            callBack(file64);
-        };
-        reader.readAsDataURL(file);
-    };
     const uploadHandler = (e: ChangeEvent<HTMLInputElement>): void => {
-        if (e.target.files && e.target.files.length) {
-            const file = e.target.files[0];
-            if (file.size < maxFileSize) {
-                convertFileToBase64(file, (file64: string) => {
-                    dispatch(uploadPhotoTC({photo: file64, user: `${user}`}));
-                    setPhoto(file64)
-                });
+        if (e.target.files) {
+            if (e.target.files.length) {
+                const file = e.target.files[0];
+                let fd = new FormData()
+                fd.append('photo', file, file.name)
+                fd.append('user', JSON.parse(!user ? '' : user).auth.me.username)
+                dispatch(uploadPhotoTC({photo: fd? fd.get('photo') : '', user: fd? fd.get('user') : ''}))
+                setPhoto(fd? fd.get('photo') : '')
             }
         }
     };
