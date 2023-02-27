@@ -46,21 +46,7 @@ export const loginTC = createAsyncThunk(
     }
 )
 
-export const advancePutTC = createAsyncThunk(
-    'advancePut',
-    async (params: {role:string, data: AdvancePutFormType}, { dispatch }) => {
-        dispatch(setAppStatus(requestStatus.LOADING))
-        try {
-            console.log(params.data)
-            const res = await putAPI.putAdvance(params.role, params.data)
-            localStorage.setItem('user', '')
-            dispatch(setAppStatus(requestStatus.SUCCEEDED))
-        } catch (err) {
-            handleError(err, dispatch)
-            dispatch(setAppStatus(requestStatus.FAILED))
-        }
-    }
-)
+
 
 export const addVideoTC = createAsyncThunk(
     'uploadVideo',
