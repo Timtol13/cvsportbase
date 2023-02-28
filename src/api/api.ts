@@ -39,7 +39,7 @@ export const authAPI = {
         return instancePhoto.post(`api/add/video/`, data)
     },
     login(data: { username: string, password: string }) {
-        return instanceDefault.post(`login/`, data)
+        return instanceDefault.post(`${api}login/`, data)
     },
     advance(role: string, data: AdvanceFormType) {
         return instance.post<AdvanceFormType>(`advanced/${role}/`, data)

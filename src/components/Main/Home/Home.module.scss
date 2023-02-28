@@ -1,0 +1,113 @@
+.home {
+  width: 90%;
+  margin: 20px auto 0;
+
+  .links {
+    display: flex;
+
+    .linkContainer {
+      position: relative;
+
+      .link {
+        button {
+          background: #C8D7FD;
+          color: #021033;
+          width: 147px;
+          height: 39px;
+          border-radius: 10px;
+          border: none;
+          font-style: normal;
+          font-weight: 600;
+          font-size: 16px;
+          line-height: 19px;
+          text-align: center;
+          margin-right: 10px;
+        }
+      }
+
+      .active {
+        button {
+          background: linear-gradient(180deg, #3ABB4E 0%, rgba(27, 255, 62, 0) 100%);
+          color: #FFFFFF;
+          width: 147px;
+          height: 39px;
+          border-radius: 10px;
+          border: none;
+          font-style: normal;
+          font-weight: 600;
+          font-size: 16px;
+          line-height: 19px;
+          text-align: center;
+          margin-right: 10px;
+        }
+      }
+
+      .subButtons {
+        display: flex;
+        position: absolute;
+        top: 49px;
+
+
+        .subInputL {
+          background: #C8D7FD;
+          color: #021033;
+          width: 100px;
+          height: 26px;
+          border: none;
+          margin-right: 1px;
+          font-style: normal;
+          font-weight: 600;
+          font-size: 13px;
+          line-height: 16px;
+          text-align: center;
+          border-radius: 10px 0 0 10px;
+        }
+        .subInputR {
+          background: #C8D7FD;
+          color: #021033;
+          width: 100px;
+          height: 26px;
+          border: none;
+          margin-right: 1px;
+          font-style: normal;
+          font-weight: 600;
+          font-size: 13px;
+          line-height: 16px;
+          text-align: center;
+          border-radius: 0 10px 10px 0;
+        }
+
+
+        .subLink {
+          background: #C8D7FD;
+          color: #021033;
+          width: 100px;
+          height: 26px;
+          border-radius: 10px;
+          border: none;
+          font-style: normal;
+          font-weight: 600;
+          font-size: 13px;
+          line-height: 16px;
+          text-align: center;
+          margin-right: 10px;
+        }
+
+        .subActive {
+          background: linear-gradient(180deg, #3ABB4E 0%, rgba(27, 255, 62, 0) 100%);
+          color: #FFFFFF;
+          width: 100px;
+          height: 26px;
+          border-radius: 10px;
+          border: none;
+          font-style: normal;
+          font-weight: 600;
+          font-size: 13px;
+          line-height: 16px;
+          text-align: center;
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+}

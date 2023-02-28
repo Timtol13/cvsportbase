@@ -18,7 +18,7 @@ export const Player = () => {
 
     const [leg, setLeg] = useState('')
     const [position, setPosition] = useState<PositionsType[]>([])
-
+    const [photo, setPhoto] = useState<any>(null)
     const positions = [
         {value: 1, label: "Вратарь"},
         {value: 2, label: "Центральный защитник"},
@@ -68,6 +68,16 @@ export const Player = () => {
         setPosition(orderOptions(newValue));
     };
 
+
+    const convertFileToBase64 = (file: File, callBack: (value: string) => void): void => {
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+            const file64 = reader.result as string;
+            callBack(file64);
+        };
+        reader.readAsDataURL(file);
+    };
     const uploadHandler = (e: ChangeEvent<HTMLInputElement>): void => {
         if (e.target.files) {
             if (e.target.files.length) {
@@ -76,6 +86,10 @@ export const Player = () => {
                 fd.append('photo', file, file.name)
                 fd.append('user', JSON.parse(!user ? '' : user).auth.me.username)
                 dispatch(uploadPhotoTC({photo: fd? fd.get('photo') : '', user: fd? fd.get('user') : ''}))
+
+                convertFileToBase64(file, (file64: string) => {
+                    setPhoto(file64)
+                });
             }
         }
     };
@@ -84,7 +98,7 @@ export const Player = () => {
         <div className={styles.role}>
             <div className={styles.files}>
                 <label className={styles.input_file} htmlFor="button-photo">
-                    <span>+</span>
+                    {photo ? <img src={photo} alt=""/> : <span>+</span>}
                     <input type="file"
                            accept="image/*"
                            onChange={uploadHandler}
