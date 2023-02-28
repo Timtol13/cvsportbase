@@ -33,10 +33,10 @@ export const authAPI = {
         return instanceDefault.post(`registration/`, data)
     },
     photoUpload(data: {photo: string, user: string}){
-        return instancePhoto.post(`api/add/photo/`, data)
+        return instancePhoto.post(`api/add/photo/${data.user}/`, data)
     },
-    videoUpload(data: {video: string, user: string}){
-        return instancePhoto.post(`api/add/video/`, data)
+    videoUpload(data: {video: string, user: string, description: any | null, title: any | null}){
+        return instance.post(`add/video/${data.user}`, data)
     },
     login(data: { username: string, password: string }) {
         return instanceDefault.post(`${api}login/`, data)
@@ -62,7 +62,7 @@ export const getAPI = {
 
 export const putAPI = {
     putPhoto(data: {photo: string, user: string}){
-        return instancePhoto.put(`api/add/photo/`, data)
+        return instancePhoto.put(`api/add/photo/${data.user}/`, data)
     },
     putAdvance(role: string, data: AdvancePutFormType) {
         return instance.put<AdvanceFormType>(`advanced/${role}/`, data)

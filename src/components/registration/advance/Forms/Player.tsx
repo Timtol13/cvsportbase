@@ -19,6 +19,8 @@ export const Player = () => {
     const [leg, setLeg] = useState('')
     const [position, setPosition] = useState<PositionsType[]>([])
     const [photo, setPhoto] = useState<any>(null)
+    const user_storage = localStorage.getItem('app-state')
+    const user = JSON.parse(user_storage? user_storage : '').auth.me.username
     const positions = [
         {value: 1, label: "Вратарь"},
         {value: 2, label: "Центральный защитник"},
@@ -50,13 +52,14 @@ export const Player = () => {
             city: '',
             description: '',
             is_show: false,
-            user: 0
+            user: user
         },
 
         onSubmit: values => {
-            dispatch(advanceTC({role: 'Player', data: {...values, leg, position}})).then(() => {
+            dispatch(advanceTC({role: 'Player', data: {...values, leg, position}})).catch(
+                e => {if (e.status === 200){
                 return nav(`/profile/Player/${values.first_name}/${values.second_name}/${values.patronymic}`)
-            })
+            }})
         },
     })
     const orderOptions = (values: readonly PositionsType[]) => {

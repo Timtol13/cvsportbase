@@ -4,14 +4,13 @@ import {getAPI, putAPI} from '../../api/api'
 import styles from './Profile.module.scss'
 import user_circle from '../../media/user/user_circle.svg'
 import video from '../../media/user/play_circle_outline.svg'
-import photos from '../../media/user/free-icon-photo-camera-748119 2.svg'
-import message from '../../media/user/comment.svg'
+import photos from '../../media/user/camera.png'
 import settings from '../../media/user/settings.svg'
 import {AdvanceFormType, VideoType} from "../../api/RequestType";
 import {useFormik} from "formik";
 import {useAppDispatch} from "../../hooks/hooks";
 import {addVideoTC, uploadPhotoTC} from "../../store/bll/authReducer";
-import {advancePutTC} from "../../store/bll/putReducer";
+import {advancePutTC, putPhotoTC} from "../../store/bll/putReducer";
 import Select, {OnChangeValue} from "react-select";
 import ReactPlayer from "react-player";
 
@@ -37,8 +36,8 @@ export const Profile = () => {
                 const file = e.target.files[0];
                 let fd = new FormData()
                 fd.append('photo', file, file.name)
-                fd.append('user', JSON.parse(!user ? '' : user).auth.me.username)
-                dispatch(uploadPhotoTC({photo: fd? fd.get('photo') : '', user: fd? fd.get('user') : ''}))
+                fd.append('user', user)
+                dispatch(putPhotoTC({photo: fd? fd.get('photo') : '', user: fd? fd.get('user') : ''}))
             }
         }
     };
@@ -47,34 +46,38 @@ export const Profile = () => {
             <nav>
                 <ul>
                     <li>
-                        <img src={user_circle} /><a onClick={() => {setPage('profile')}}>Мой профиль</a>
+                        <img src={user_circle} alt={''} /><a onClick={() => {setPage('profile')}}>Мой профиль</a>
                     </li>
                     <li>
-                        <img src={video} /><a onClick={() => {setPage('video')}}>Видео</a>
+                        <img src={video} alt={''} /><a onClick={() => {setPage('video')}}>Видео</a>
                     </li>
                     <li>
-                        <img src={photos} /><a onClick={() => {setPage('photo')}}>Фото</a>
+                        <img src={photos} width={25} height={25} alt={''} /><a onClick={() => {setPage('photo')}}>Фото</a>
                     </li>
                     {/*<li>*/}
                     {/*    <img src={message} /><a onClick={() => {setPage('messages')}}>Сообщения</a>*/}
                     {/*</li>*/}
-                    <li>
-                        <img src={settings} /><a onClick={() => {setPage('settings')}}>Настройки</a>
-                    </li>
+                    {/*<li>*/}
+                    {/*    <img src={settings} /><a onClick={() => {setPage('settings')}}>Настройки</a>*/}
+                    {/*</li>*/}
                 </ul>
             </nav>
             { page === 'profile' &&
                 <>
                     <div className={styles.ProfilePhoto}>
                         <img src={`${api}${image?.photo}`} alt={'Wait'}/>
-                        <label htmlFor="button-photo">
-                            <span>Фзменить фото</span>
-                            <input type="file"
-                                   accept="image/*"
-                                   onChange={uploadHandler}
-                                   className={styles.files}
-                                   id="button-photo"/>
-                        </label>
+
+                        <div className={styles.files}>
+                            <label className={styles.ChangeFile} htmlFor="button-photo">
+                                <span>Изменить фото</span>
+                                <input type="file"
+                                       accept="image/*"
+                                       onChange={uploadHandler}
+                                       className={styles.files}
+                                       id="button-photo"
+                                />
+                            </label>
+                        </div>
                     </div>
                     <MyProfile />
                 </>
@@ -94,12 +97,6 @@ export const Profile = () => {
 
                 </div>
             }
-            {page === 'settings' &&
-                <div>
-
-                </div>
-            }
-
         </div>
     )
 }
@@ -181,8 +178,20 @@ export const MyProfile = () => {
             <input placeholder={roleData?.city} {...formik.getFieldProps('city')} />
             <input placeholder={roleData?.email} {...formik.getFieldProps('email')} />
             <input type={'tel'} placeholder={roleData?.phone} {...formik.getFieldProps('phone')} />
-            <i>Отображать всем</i><input type={'checkbox'} {...formik.getFieldProps('is_show')} />
-            <i>Шенген</i><input type={'checkbox'} {...formik.getFieldProps('shengen')} />
+            <div className={styles.checkbox}>
+                <input {...formik.getFieldProps('shengen')}
+                       className={styles.check} type={'checkbox'}/>
+                <div className={styles.assent}>
+                    Наличие шенгена
+                </div>
+            </div>
+            <div className={styles.checkbox}>
+                <input {...formik.getFieldProps('is_show')}
+                       className={styles.check} type={'checkbox'}/>
+                <div className={styles.assent}>
+                    Отображать всем
+                </div>
+            </div>
             <div className={styles.label}>
                 <Select className={styles.selectPlayer}
                         styles={{
@@ -207,8 +216,20 @@ export const MyProfile = () => {
             <input placeholder={roleData?.city} {...formik.getFieldProps('city')} />
             <input placeholder={roleData?.email} {...formik.getFieldProps('email')} />
             <input type={'tel'} placeholder={roleData?.phone} {...formik.getFieldProps('phone')} />
-            <i>Отображать всем</i><input type={'checkbox'} {...formik.getFieldProps('is_show')} />
-            <i>Шенген</i><input type={'checkbox'} {...formik.getFieldProps('shengen')} />
+            <div className={styles.checkbox}>
+                <input {...formik.getFieldProps('shengen')}
+                       className={styles.check} type={'checkbox'}/>
+                <div className={styles.assent}>
+                    Наличие шенгена
+                </div>
+            </div>
+            <div className={styles.checkbox}>
+                <input {...formik.getFieldProps('is_show')}
+                       className={styles.check} type={'checkbox'}/>
+                <div className={styles.assent}>
+                    Отображать всем
+                </div>
+            </div>
             <button type="submit">Сохранить</button>
         </form>
     }
@@ -222,8 +243,20 @@ export const MyProfile = () => {
             <input placeholder={roleData?.city} {...formik.getFieldProps('city')} />
             <input placeholder={roleData?.email} {...formik.getFieldProps('email')} />
             <input type={'tel'} placeholder={roleData?.phone} {...formik.getFieldProps('phone')} />
-            <i>Отображать всем</i><input type={'checkbox'} {...formik.getFieldProps('is_show')} />
-            <i>Шенген</i><input type={'checkbox'} {...formik.getFieldProps('shengen')} />
+            <div className={styles.checkbox}>
+                <input {...formik.getFieldProps('shengen')}
+                       className={styles.check} type={'checkbox'}/>
+                <div className={styles.assent}>
+                    Наличие шенгена
+                </div>
+            </div>
+            <div className={styles.checkbox}>
+                <input {...formik.getFieldProps('is_show')}
+                       className={styles.check} type={'checkbox'}/>
+                <div className={styles.assent}>
+                    Отображать всем
+                </div>
+            </div>
             <button type="submit">Сохранить</button>
         </form>
     }
@@ -237,8 +270,20 @@ export const MyProfile = () => {
             <input placeholder={roleData?.city} {...formik.getFieldProps('city')} />
             <input placeholder={roleData?.email} {...formik.getFieldProps('email')} />
             <input type={'tel'} placeholder={roleData?.phone} {...formik.getFieldProps('phone')} />
-            <i>Отображать всем</i><input type={'checkbox'} {...formik.getFieldProps('is_show')} />
-            <i>Шенген</i><input type={'checkbox'} {...formik.getFieldProps('shengen')} />
+            <div className={styles.checkbox}>
+                <input {...formik.getFieldProps('shengen')}
+                       className={styles.check} type={'checkbox'}/>
+                <div className={styles.assent}>
+                    Наличие шенгена
+                </div>
+            </div>
+            <div className={styles.checkbox}>
+                <input {...formik.getFieldProps('is_show')}
+                       className={styles.check} type={'checkbox'}/>
+                <div className={styles.assent}>
+                    Отображать всем
+                </div>
+            </div>
             <button type="submit">Сохранить</button>
         </form>
     }
@@ -252,8 +297,20 @@ export const MyProfile = () => {
             <input placeholder={roleData?.city} {...formik.getFieldProps('city')} />
             <input placeholder={roleData?.email} {...formik.getFieldProps('email')} />
             <input type={'tel'} placeholder={roleData?.phone} {...formik.getFieldProps('phone')} />
-            <i>Отображать всем</i><input type={'checkbox'} {...formik.getFieldProps('is_show')} />
-            <i>Шенген</i><input type={'checkbox'} {...formik.getFieldProps('shengen')} />
+            <div className={styles.checkbox}>
+                <input {...formik.getFieldProps('shengen')}
+                       className={styles.check} type={'checkbox'}/>
+                <div className={styles.assent}>
+                    Наличие шенгена
+                </div>
+            </div>
+            <div className={styles.checkbox}>
+                <input {...formik.getFieldProps('is_show')}
+                       className={styles.check} type={'checkbox'}/>
+                <div className={styles.assent}>
+                    Отображать всем
+                </div>
+            </div>
             <button type="submit">Сохранить</button>
         </form>
     }
@@ -267,8 +324,20 @@ export const MyProfile = () => {
             <input placeholder={roleData?.city} {...formik.getFieldProps('city')} />
             <input placeholder={roleData?.email} {...formik.getFieldProps('email')} />
             <input type={'tel'} placeholder={roleData?.phone} {...formik.getFieldProps('phone')} />
-            <i>Отображать всем</i><input type={'checkbox'} {...formik.getFieldProps('is_show')} />
-            <i>Шенген</i><input type={'checkbox'} {...formik.getFieldProps('shengen')} />
+            <div className={styles.checkbox}>
+                <input {...formik.getFieldProps('shengen')}
+                       className={styles.check} type={'checkbox'}/>
+                <div className={styles.assent}>
+                    Наличие шенгена
+                </div>
+            </div>
+            <div className={styles.checkbox}>
+                <input {...formik.getFieldProps('is_show')}
+                       className={styles.check} type={'checkbox'}/>
+                <div className={styles.assent}>
+                    Отображать всем
+                </div>
+            </div>
             <button type="submit">Сохранить</button>
         </form>
     }
@@ -304,15 +373,17 @@ export const MyVideo = () => {
     return (
         <>
             <div className={styles.files}>
-                <ReactPlayer url={videos?.file}
-                             playing={playing}
-                             onMouseOver={()=>setPlaying(true)}
-                             onMouseOut={()=>setPlaying(false)}
-                />
+                { videos &&
+                    <ReactPlayer url={videos?.file}
+                                 playing={playing}
+                                 onMouseOver={()=>setPlaying(true)}
+                                 onMouseOut={()=>setPlaying(false)}
+                    />
+                }
                 <label className={styles.input_file} htmlFor="button-video">
                     <span>Добавить видео</span>
                     <input type="file"
-                           accept="video/*"
+                           accept="image/*"
                            onChange={uploadHandler}
                            className={styles.files}
                            id="button-video"/>

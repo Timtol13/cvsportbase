@@ -52,7 +52,7 @@ export const addVideoTC = createAsyncThunk(
     async (params: {video: any, user: any}, {dispatch}) => {
         dispatch(setAppStatus(requestStatus.LOADING))
         try{
-            const res = await authAPI.videoUpload({video: params.video, user: params.user})
+            const res = await authAPI.videoUpload({video: params.video, user: params.user, description: null, title: null})
             dispatch(setAppStatus(requestStatus.SUCCEEDED))
         } catch (err) {
             handleError(err, dispatch)
