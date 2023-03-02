@@ -1,4 +1,4 @@
-import axios, {AxiosResponse} from "axios";
+import axios from "axios";
 import {AdvanceFormType, AdvancePutFormType, RegistrationFormType} from "./RequestType";
 
 let token = localStorage.getItem('app-state')
@@ -27,6 +27,8 @@ const instanceDefault = axios.create({
         'Content-Type': 'application/json'
     },
 })
+const user_storage = localStorage.getItem('app-state')
+const user = JSON.parse(user_storage? user_storage : '').auth.me.username
 
 export const authAPI = {
     registration(data: RegistrationFormType) {
@@ -35,8 +37,8 @@ export const authAPI = {
     photoUpload(data: {photo: string, user: string}){
         return instancePhoto.post(`api/add/photo/${data.user}/`, data)
     },
-    videoUpload(data: {video: string, user: string, description: any | null, title: any | null}){
-        return instance.post(`add/video/${data.user}`, data)
+    videoUpload(data: {video: string, user: string}){
+        return instancePhoto.post(`api/add/video/${data.user}/`, data)
     },
     login(data: { username: string, password: string }) {
         return instanceDefault.post(`${api}login/`, data)
@@ -65,7 +67,7 @@ export const putAPI = {
         return instancePhoto.put(`api/add/photo/${data.user}/`, data)
     },
     putAdvance(role: string, data: AdvancePutFormType) {
-        return instance.put<AdvanceFormType>(`advanced/${role}/`, data)
+        return instance.put<AdvanceFormType>(`advanced/${role}/${user}/`, data)
     },
 }
 

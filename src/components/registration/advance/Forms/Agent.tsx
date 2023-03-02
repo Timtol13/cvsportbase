@@ -24,9 +24,10 @@ export const Agent = () => {
         },
 
         onSubmit: values => {
-            dispatch(advanceTC({role: 'Agent', data: values})).then(() => {
-                return nav(`/profile/Agent/${values.first_name}/${values.second_name}/${values.patronymic}`)
-            })
+            dispatch(advanceTC({role: 'Agent', data: values})).then(
+                () => {
+                    return nav(`/profile/Player/${values.first_name}/${values.second_name}/${values.patronymic}`)
+                })
 
         },
     })

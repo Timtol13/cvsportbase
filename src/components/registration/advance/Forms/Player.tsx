@@ -56,10 +56,10 @@ export const Player = () => {
         },
 
         onSubmit: values => {
-            dispatch(advanceTC({role: 'Player', data: {...values, leg, position}})).catch(
-                e => {if (e.status === 200){
+            dispatch(advanceTC({role: 'Player', data: {...values, leg, position}})).then(
+                () => {
                 return nav(`/profile/Player/${values.first_name}/${values.second_name}/${values.patronymic}`)
-            }})
+            })
         },
     })
     const orderOptions = (values: readonly PositionsType[]) => {
@@ -87,7 +87,7 @@ export const Player = () => {
                 const file = e.target.files[0];
                 let fd = new FormData()
                 fd.append('photo', file, file.name)
-                fd.append('user', JSON.parse(!user ? '' : user).auth.me.username)
+                fd.append('user', user)
                 dispatch(uploadPhotoTC({photo: fd? fd.get('photo') : '', user: fd? fd.get('user') : ''}))
 
                 convertFileToBase64(file, (file64: string) => {

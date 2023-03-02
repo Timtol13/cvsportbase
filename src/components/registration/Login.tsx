@@ -9,13 +9,21 @@ export const Login = () => {
     const dispatch = useAppDispatch()
     const [role, setRole] = useState('')
     const nav = useNavigate()
+    let error: string | null
+    error = null
     const formik = useFormik({
         initialValues: {
             username: '',
             password: '',
         },
         onSubmit: values => {
-            dispatch(loginTC({...values, role})).then(() => {return nav('/home')})
+            dispatch(loginTC({...values, role})).then(() => {
+                return nav('/home')
+            }).catch(e => {
+                if(e.status === 400){
+                    error = e.error
+                }
+            })
         }
     }
     )
@@ -39,7 +47,7 @@ export const Login = () => {
                     </select>
                     <button className={styles.register} type="submit">Войти</button>
                     <div className={styles.login}>Ещё нет аккаунта? <a href={'/registration'}>Создайте аккаунт</a></div>
-
+                {error && <h3>{error}</h3>}
             </form>
         </div>
     )

@@ -51,6 +51,9 @@ export type AdvanceFormType = {
 }
 
 export type VideoType = {
-    file: string,
-    player?: AdvanceFormType
+    video?: string,
+    user?: RegistrationFormType,
+    player?: AdvanceFormType,
+    description?: string,
+    title?: string,
 }

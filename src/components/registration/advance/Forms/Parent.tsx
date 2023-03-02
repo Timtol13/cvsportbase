@@ -3,9 +3,11 @@ import {useAppDispatch} from "../../../../hooks/hooks";
 import React from "react";
 import {useFormik} from "formik";
 import {advanceTC} from "../../../../store/bll/authReducer";
+import {useNavigate} from "react-router";
 
 export const Parent = () => {
     const dispatch = useAppDispatch()
+    const nav = useNavigate()
     const formik = useFormik({
         initialValues: {
             age: '',
@@ -21,7 +23,10 @@ export const Parent = () => {
         },
 
         onSubmit: values => {
-            dispatch(advanceTC({role: 'Parent', data: values}))
+            dispatch(advanceTC({role: 'Parent', data: values})).then(
+                () => {
+                    return nav(`/profile/Player/${values.first_name}/${values.second_name}/${values.patronymic}`)
+                })
 
         },
     })

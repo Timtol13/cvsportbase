@@ -4,9 +4,11 @@ import React from "react";
 import {useFormik} from "formik";
 import {advanceTC} from "../../../../store/bll/authReducer";
 import axios from "axios";
+import {useNavigate} from "react-router";
 
 export const Scout = () => {
     const dispatch = useAppDispatch()
+    const nav = useNavigate()
     const formik = useFormik({
         initialValues: {
             age: '',
@@ -22,7 +24,10 @@ export const Scout = () => {
         },
 
         onSubmit: values => {
-            dispatch(advanceTC({role: 'Scout', data: values}))
+            dispatch(advanceTC({role: 'Scout', data: values})).then(
+                () => {
+                    return nav(`/profile/Player/${values.first_name}/${values.second_name}/${values.patronymic}`)
+                })
 
         },
     })

@@ -1,5 +1,5 @@
 import React, {useState, useEffect, ChangeEvent} from 'react'
-import {useParams} from 'react-router'
+import {useNavigate, useParams} from 'react-router'
 import {getAPI, putAPI} from '../../api/api'
 import styles from './Profile.module.scss'
 import user_circle from '../../media/user/user_circle.svg'
@@ -21,14 +21,25 @@ type PositionsType = {
 }
 const api = 'http://127.0.0.1:8000'
 
+export type ActionType = {
+    [key: string]: boolean
+}
+
+
+
 export const Profile = () => {
     const [image, setImage] = useState<any>()
     const dispatch = useAppDispatch()
+    const nav = useNavigate()
     const user_storage = localStorage.getItem('app-state')
     const [page, setPage] = useState('profile')
     const user = JSON.parse(user_storage? user_storage : '').auth.me.username
     useEffect(() => {
-        getAPI.getPhoto(user).then((e) => {setImage(e.data[0])})
+        getAPI.getPhoto(user).then((e) => {setImage(e.data[0])}).catch(e => {
+            if(e.status === 401){
+                return nav('/login')
+            }
+        })
     }, [])
     const uploadHandler = (e: ChangeEvent<HTMLInputElement>): void => {
         if (e.target.files) {
@@ -46,13 +57,19 @@ export const Profile = () => {
             <nav>
                 <ul>
                     <li>
-                        <img src={user_circle} alt={''} /><a onClick={() => {setPage('profile')}}>Мой профиль</a>
+                        <img src={user_circle} alt={''} /><a onClick={() => {
+                            setPage('profile')
+                        }}>Мой профиль</a>
                     </li>
                     <li>
-                        <img src={video} alt={''} /><a onClick={() => {setPage('video')}}>Видео</a>
+                        <img src={video} alt={''} /><a onClick={() => {
+                            setPage('video')
+                        }}>Видео</a>
                     </li>
                     <li>
-                        <img src={photos} width={25} height={25} alt={''} /><a onClick={() => {setPage('photo')}}>Фото</a>
+                        <img src={photos} width={25} height={25} alt={''} /><a onClick={() => {
+                            setPage('photo')
+                        }}>Фото</a>
                     </li>
                     {/*<li>*/}
                     {/*    <img src={message} /><a onClick={() => {setPage('messages')}}>Сообщения</a>*/}
@@ -108,7 +125,11 @@ export const MyProfile = () => {
     const  [ roleData, setRoleData] = useState<AdvanceFormType>()
     const user = JSON.parse(user_storage? user_storage : '').auth.me.username
     useEffect(() => {
-        getAPI.getRole(role, first_name, second_name, patronymic).then(e => setRoleData(e.data[0]))
+        getAPI.getRole(role, first_name, second_name, patronymic).then(e => setRoleData(e.data[0])).catch(e => {
+            if(e.status === 401){
+                return nav('/login')
+            }
+        })
     }, [])
 
     const dispatch = useAppDispatch()
@@ -128,6 +149,7 @@ export const MyProfile = () => {
         {value: 11, label: "Левый вингер"},
         {value: 12, label: "Инсайдер"},
     ]
+    const nav = useNavigate()
     const orderOptions = (values: readonly PositionsType[]) => {
         return values
             .filter((v) => v.isFixed)
@@ -155,7 +177,7 @@ export const MyProfile = () => {
             },
 
             onSubmit: values => {
-                dispatch(advancePutTC({role: 'Player', data: {...values, leg, position}})).then(() => {})
+                dispatch(advancePutTC({role: 'Player', data: {...values, leg, position}})).then(() => {return nav(`profile/${role}/${first_name}/${second_name}/${patronymic}`)})
             },
         }
     )
@@ -354,6 +376,7 @@ export const MyProfile = () => {
 export const MyVideo = () => {
     const user = localStorage.getItem('app-state')
     const dispatch = useAppDispatch()
+    const nav = useNavigate()
     const uploadHandler = (e: ChangeEvent<HTMLInputElement>): void => {
         if (e.target.files) {
             if (e.target.files.length) {
@@ -368,26 +391,37 @@ export const MyVideo = () => {
     const [videos, setVideos] = useState<VideoType>()
     const [playing, setPlaying] = useState(false)
     useEffect(() => {
-        getAPI.getUserVideos(JSON.parse(!user ? '' : user).auth.me.username).then(e=> {setVideos(e.data)})
+        getAPI.getUserVideos(JSON.parse(!user ? '' : user).auth.me.username).then(e=> {
+            console.log(e.data[0].video)
+            setVideos(e.data[0])
+        }).catch(e => {
+            if(e.status === 401){
+                return nav('/login')
+            }
+        })
     }, [])
     return (
         <>
             <div className={styles.files}>
+                <div className={styles.frame}>
                 { videos &&
-                    <ReactPlayer url={videos?.file}
+                    <ReactPlayer url={`${api}${videos?.video}`}
                                  playing={playing}
                                  onMouseOver={()=>setPlaying(true)}
                                  onMouseOut={()=>setPlaying(false)}
                     />
                 }
+                </div>
+                <div className={styles.frame}>
                 <label className={styles.input_file} htmlFor="button-video">
                     <span>Добавить видео</span>
                     <input type="file"
-                           accept="image/*"
+                           accept="video/*"
                            onChange={uploadHandler}
                            className={styles.files}
                            id="button-video"/>
                 </label>
+                </div>
             </div>
         </>
     )
@@ -395,10 +429,15 @@ export const MyVideo = () => {
 
 export const MyPhotos = () => {
     const [photos, setPhotos] = useState<any>()
+    const nav = useNavigate()
     const user = localStorage.getItem('app-state')
     const dispatch = useAppDispatch()
     useEffect(() => {
-        getAPI.getPhoto(JSON.parse(!user ? '' : user).auth.me.username).then(e => {setPhotos(e)})
+        getAPI.getPhoto(JSON.parse(!user ? '' : user).auth.me.username).then(e => {setPhotos(e)}).catch(e => {
+            if(e.status === 401){
+                return nav('/login')
+            }
+        })
     }, [])
     const uploadHandler = (e: ChangeEvent<HTMLInputElement>): void => {
         if (e.target.files) {

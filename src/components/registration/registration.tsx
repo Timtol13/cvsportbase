@@ -8,6 +8,8 @@ import {useFormik} from "formik";
 export const Registration = () => {
     const dispatch = useAppDispatch()
     const [role, SetRole] = useState('')
+    let error: string | null
+    error = null
     const nav = useNavigate()
     const formik = useFormik({
         initialValues: {
@@ -19,6 +21,13 @@ export const Registration = () => {
         onSubmit: values => {
             dispatch(registrationTC({...values, role})).then(() => {
                 return nav(`/advance/${role}`)
+            }).catch(e => {
+                if(e.status === 400){
+                    error = 'Такой пользователь уже существует!'
+                }
+                if(e.status === 401){
+                    return nav('/login')
+                }
             })
         },
     })
@@ -54,6 +63,7 @@ export const Registration = () => {
 
                 <button className={styles.register} type="submit">Зарегистрироваться</button>
                 <div className={styles.login}>Уже есть аккаунт? <a href={'/login'}>Войти</a></div>
+                {error && <h3>{error}</h3>}
             </form>
         </div>)
 }
