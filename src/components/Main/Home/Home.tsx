@@ -3,6 +3,7 @@ import {Navigate, NavLink, Route, Routes} from "react-router-dom";
 import {MyVideo} from "./MyVideo/MyVideo";
 import styles from "./Home.module.scss";
 import {Profiles} from "./Profiles/Profiles";
+import {All} from "./All/All"
 
 export type ActionType = {
     [key: string]: boolean
@@ -122,6 +123,13 @@ export const Home = () => {
                         : null
                     }
                 </div>
+                <div className={styles.linkContainer}>
+                    <NavLink to={'all'} className={setAction} onClick={() => setActive('All')}>
+                        <button>
+                            Все
+                        </button>
+                    </NavLink>
+                </div>
             </div>
             <Routes>
                 <Route path='/' element={<Navigate to={'myVideo'}/>}/>
@@ -132,6 +140,7 @@ export const Home = () => {
                 <Route path='weight' element={<Profiles/>}/>
                 <Route path='height' element={<Profiles/>}/>
                 <Route path='schengen' element={<Profiles/>}/>
+                <Route path='all' element={<All/>}/>
             </Routes>
         </div>
     );

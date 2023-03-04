@@ -6,6 +6,8 @@ import {advanceTC} from "../../../../store/bll/authReducer";
 import {useNavigate} from "react-router";
 
 export const Parent = () => {
+    const user_storage = localStorage.getItem('app-state')
+    const user = JSON.parse(user_storage? user_storage : '').auth.me.username
     const dispatch = useAppDispatch()
     const nav = useNavigate()
     const formik = useFormik({
@@ -25,7 +27,7 @@ export const Parent = () => {
         onSubmit: values => {
             dispatch(advanceTC({role: 'Parent', data: values})).then(
                 () => {
-                    return nav(`/profile/Player/${values.first_name}/${values.second_name}/${values.patronymic}`)
+                    return nav(`/profile/Parent/${user}`)
                 })
 
         },

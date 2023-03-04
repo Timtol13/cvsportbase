@@ -7,6 +7,8 @@ import axios from "axios";
 import {useNavigate} from "react-router";
 
 export const Trainer = () => {
+    const user_storage = localStorage.getItem('app-state')
+    const user = JSON.parse(user_storage? user_storage : '').auth.me.username
     const dispatch = useAppDispatch()
     const nav = useNavigate()
     const formik = useFormik({
@@ -31,7 +33,7 @@ export const Trainer = () => {
         onSubmit: values => {
             dispatch(advanceTC({role: 'Trainer', data: values})).then(
                 () => {
-                    return nav(`/profile/Player/${values.first_name}/${values.second_name}/${values.patronymic}`)
+                    return nav(`/profile/Trainer/${user}`)
                 })
 
         },

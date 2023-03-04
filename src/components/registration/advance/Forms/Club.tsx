@@ -7,6 +7,8 @@ import axios from "axios";
 import {useNavigate} from "react-router";
 
 export const Scout = () => {
+    const user_storage = localStorage.getItem('app-state')
+    const user = JSON.parse(user_storage? user_storage : '').auth.me.username
     const dispatch = useAppDispatch()
     const nav = useNavigate()
     const formik = useFormik({
@@ -24,9 +26,9 @@ export const Scout = () => {
         },
 
         onSubmit: values => {
-            dispatch(advanceTC({role: 'Scout', data: values})).then(
+            dispatch(advanceTC({role: 'Club', data: values})).then(
                 () => {
-                    return nav(`/profile/Player/${values.first_name}/${values.second_name}/${values.patronymic}`)
+                    return nav(`/profile/Club/${user}`)
                 })
 
         },

@@ -11,7 +11,6 @@ type PositionsType = {
     label: string
     isFixed?: boolean
 }
-let user = localStorage.getItem('app-state')
 export const Player = () => {
     const dispatch = useAppDispatch()
     const nav = useNavigate()
@@ -58,7 +57,7 @@ export const Player = () => {
         onSubmit: values => {
             dispatch(advanceTC({role: 'Player', data: {...values, leg, position}})).then(
                 () => {
-                return nav(`/profile/Player/${values.first_name}/${values.second_name}/${values.patronymic}`)
+                return nav(`/profile/Player/${user}`)
             })
         },
     })

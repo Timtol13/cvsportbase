@@ -57,3 +57,7 @@ export type VideoType = {
     description?: string,
     title?: string,
 }
+export type UserPhoto = {
+    photo?: string,
+    user?: string
+}

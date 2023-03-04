@@ -2,7 +2,7 @@ import axios from "axios";
 import {AdvanceFormType, AdvancePutFormType, RegistrationFormType} from "./RequestType";
 
 let token = localStorage.getItem('app-state')
-const api = 'http://127.0.0.1:8000/'
+export const api = 'http://127.0.0.1:8000/'
 const instance = axios.create({
     baseURL: `${api}api/`,
     withCredentials: true,
@@ -49,7 +49,7 @@ export const authAPI = {
 }
 export const getAPI = {
     getRole(role: string | undefined, first_name: string | undefined, second_name: string | undefined, patronymic: string | undefined) {
-        return instance.get(`advanced/${role}/?search=${first_name}+${second_name}+${patronymic}`)
+        return instance.get(`advanced/${role}/?search=${user}`)
     },
     getVideos() {
         return instance.get('add/video/')
@@ -59,6 +59,9 @@ export const getAPI = {
     },
      getPhoto(user: string){
         return instancePhoto.get(`api/add/photo/${user}/`)
+    },
+    getUsersPhoto(){
+        return instancePhoto.get(`api/add/photo/`)
     }
 }
 

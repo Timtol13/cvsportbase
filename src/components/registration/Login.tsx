@@ -18,7 +18,7 @@ export const Login = () => {
         },
         onSubmit: values => {
             dispatch(loginTC({...values, role})).then(() => {
-                return nav('/home')
+                return nav('/')
             }).catch(e => {
                 if(e.status === 400){
                     error = e.error
@@ -35,7 +35,7 @@ export const Login = () => {
 
                     <input className={styles.input} placeholder={'Введите логин'} {...formik.getFieldProps('username')} />
                     <input className={styles.input} placeholder={'Введите E-mail'} {...formik.getFieldProps('email')} />
-                    <input className={styles.input} placeholder={'Введите пароль'} {...formik.getFieldProps('password')} />
+                    <input className={styles.input} placeholder={'Введите пароль'} type={'password'} {...formik.getFieldProps('password')} />
                     <select className={styles.select} id={'role'} onChange={e => setRole(e.target.value)}>
                         <option className={styles.option}>Выберите роль</option>
                         <option className={styles.option} value={'Player'}>Игрок</option>

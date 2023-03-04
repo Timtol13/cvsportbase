@@ -1,11 +1,10 @@
 import React, {useState, useEffect, ChangeEvent} from 'react'
 import {useNavigate, useParams} from 'react-router'
-import {getAPI, putAPI} from '../../api/api'
+import {getAPI} from '../../api/api'
 import styles from './Profile.module.scss'
 import user_circle from '../../media/user/user_circle.svg'
 import video from '../../media/user/play_circle_outline.svg'
 import photos from '../../media/user/camera.png'
-import settings from '../../media/user/settings.svg'
 import {AdvanceFormType, VideoType} from "../../api/RequestType";
 import {useFormik} from "formik";
 import {useAppDispatch} from "../../hooks/hooks";
@@ -13,19 +12,13 @@ import {addVideoTC, uploadPhotoTC} from "../../store/bll/authReducer";
 import {advancePutTC, putPhotoTC} from "../../store/bll/putReducer";
 import Select, {OnChangeValue} from "react-select";
 import ReactPlayer from "react-player";
+import {api} from "../../../../api/api";
 
 type PositionsType = {
     value: number
     label: string
     isFixed?: boolean
 }
-const api = 'http://127.0.0.1:8000'
-
-export type ActionType = {
-    [key: string]: boolean
-}
-
-
 
 export const Profile = () => {
     const [image, setImage] = useState<any>()
@@ -48,12 +41,15 @@ export const Profile = () => {
                 let fd = new FormData()
                 fd.append('photo', file, file.name)
                 fd.append('user', user)
-                dispatch(putPhotoTC({photo: fd? fd.get('photo') : '', user: fd? fd.get('user') : ''}))
+                dispatch(
+                    !image ? uploadPhotoTC({photo: fd? fd.get('photo') : '', user: fd? fd.get('user') : ''}) : putPhotoTC({photo: fd? fd.get('photo') : '', user: fd? fd.get('user') : ''})
+                )
             }
         }
     };
     return (
         <div className={styles.container}>
+
             <nav>
                 <ul>
                     <li>
@@ -86,7 +82,7 @@ export const Profile = () => {
 
                         <div className={styles.files}>
                             <label className={styles.ChangeFile} htmlFor="button-photo">
-                                <span>Изменить фото</span>
+                                <span>{image ? "Изменить фото" : "Добавить фото"} </span>
                                 <input type="file"
                                        accept="image/*"
                                        onChange={uploadHandler}
@@ -388,30 +384,33 @@ export const MyVideo = () => {
             }
         }
     };
-    const [videos, setVideos] = useState<VideoType>()
+    const [video, setVideos] = useState<VideoType[]>()
     const [playing, setPlaying] = useState(false)
     useEffect(() => {
         getAPI.getUserVideos(JSON.parse(!user ? '' : user).auth.me.username).then(e=> {
             console.log(e.data[0].video)
-            setVideos(e.data[0])
+            setVideos(e.data)
         }).catch(e => {
             if(e.status === 401){
                 return nav('/login')
             }
         })
     }, [])
+    const videos = video?.map(vid => {
+        return (
+            <div className={styles.frame}>
+                <ReactPlayer url={`${api}${vid?.video}`}
+                             playing={playing}
+                             onMouseOver={()=>setPlaying(true)}
+                             onMouseOut={()=>setPlaying(false)}
+                />
+            </div>
+        )
+    })
     return (
         <>
             <div className={styles.files}>
-                <div className={styles.frame}>
-                { videos &&
-                    <ReactPlayer url={`${api}${videos?.video}`}
-                                 playing={playing}
-                                 onMouseOver={()=>setPlaying(true)}
-                                 onMouseOut={()=>setPlaying(false)}
-                    />
-                }
-                </div>
+                {videos? videos : ''}
                 <div className={styles.frame}>
                 <label className={styles.input_file} htmlFor="button-video">
                     <span>Добавить видео</span>
@@ -431,7 +430,6 @@ export const MyPhotos = () => {
     const [photos, setPhotos] = useState<any>()
     const nav = useNavigate()
     const user = localStorage.getItem('app-state')
-    const dispatch = useAppDispatch()
     useEffect(() => {
         getAPI.getPhoto(JSON.parse(!user ? '' : user).auth.me.username).then(e => {setPhotos(e)}).catch(e => {
             if(e.status === 401){
@@ -439,29 +437,10 @@ export const MyPhotos = () => {
             }
         })
     }, [])
-    const uploadHandler = (e: ChangeEvent<HTMLInputElement>): void => {
-        if (e.target.files) {
-            if (e.target.files.length) {
-                const file = e.target.files[0];
-                let fd = new FormData()
-                fd.append('photo', file, file.name)
-                fd.append('user', JSON.parse(!user ? '' : user).auth.me.username)
-                dispatch(uploadPhotoTC({photo: fd? fd.get('photo') : '', user: fd? fd.get('user') : ''}))
-            }
-        }
-    };
     return (
         <div>
-            <img src={`${api}${photos?.photo}`} alt={''}/>
-            <div className={styles.files}>
-                <label className={styles.input_file} htmlFor="button-photo">
-                    <span>Добавить фото</span>
-                    <input type="file"
-                           accept="image/*"
-                           onChange={uploadHandler}
-                           className={styles.files}
-                           id="button-photo"/>
-                </label>
+            <div className={styles.ProfilePhoto}>
+                <img src={`${api}${photos?.photo}`} alt={'Wait'}/>
             </div>
         </div>
     )

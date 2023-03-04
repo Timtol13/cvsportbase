@@ -3,9 +3,11 @@ import ReactPlayer from "react-player";
 import {VideoType} from "../../../../api/RequestType";
 import {getAPI} from "../../../../api/api";
 import {useNavigate} from "react-router";
+import styles from "../../../Profile/Profile.module.scss";
+import {api} from "../../../../api/api";
 
 export const MyVideo = () => {
-    const [videos, setVideos] = useState<VideoType>()
+    const [video, setVideos] = useState<VideoType[]>()
     const nav = useNavigate()
 
     useEffect(()=> {
@@ -19,13 +21,22 @@ export const MyVideo = () => {
         )
     }, [])
     const [playing, setPlaying] = useState(false)
+    const videos = video?.map(vid => {
+        return (
+            <div className={styles.frame}>
+                <ReactPlayer url={`${vid?.video}`}
+                             playing={playing}
+                             width={310}
+                             height={'auto'}
+                             onMouseOver={()=>setPlaying(true)}
+                             onMouseOut={()=>setPlaying(false)}
+                />
+            </div>
+        )
+    })
     return (
-        <div>
-            <ReactPlayer url={videos?.video}
-                         playing={playing}
-                         onMouseOver={()=>setPlaying(true)}
-                         onMouseOut={()=>setPlaying(false)}
-            />
+        <div className={styles.video}>
+            {videos? videos : ''}
         </div>
     );
 };

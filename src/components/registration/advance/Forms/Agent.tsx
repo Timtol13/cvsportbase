@@ -5,8 +5,11 @@ import {useFormik} from "formik";
 import {advanceTC} from "../../../../store/bll/authReducer";
 import {useNavigate} from "react-router";
 import axios from "axios";
+import {api} from "../../../../api/api";
 
 export const Agent = () => {
+    const user_storage = localStorage.getItem('app-state')
+    const user = JSON.parse(user_storage? user_storage : '').auth.me.username
     const dispatch = useAppDispatch()
     const nav = useNavigate()
     const formik = useFormik({
@@ -26,7 +29,7 @@ export const Agent = () => {
         onSubmit: values => {
             dispatch(advanceTC({role: 'Agent', data: values})).then(
                 () => {
-                    return nav(`/profile/Player/${values.first_name}/${values.second_name}/${values.patronymic}`)
+                    return nav(`/profile/Player/${user}`)
                 })
 
         },
@@ -39,7 +42,6 @@ export const Agent = () => {
                     <span>+</span>
                     <input type={'file'} onChange={(e: any) => {
                         const formData = new FormData()
-                        const api = 'http://127.0.0.1:8000/'
                         let token = sessionStorage.getItem('tokenData');
                         formData.append('image', e.target.files[0], e.target.files[0].name)
                         formData.append('token', JSON.parse(token ? token : '').access)

@@ -110,4 +110,24 @@
       }
     }
   }
+  div{
+    width: 920px;
+    height: 100%;
+    display: flex;
+    justify-content: left;
+    align-items: start;
+    @media (max-width: 1140px) {
+      display: none;
+    }
+    .frame {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 20px;
+      vertical-align: center;
+      video{
+        border-radius: 30px;
+      }
+    }
+  }
 }
