@@ -70,16 +70,6 @@ export const Player = () => {
         setPosition(orderOptions(newValue));
     };
 
-
-    const convertFileToBase64 = (file: File, callBack: (value: string) => void): void => {
-        const reader = new FileReader();
-
-        reader.onloadend = () => {
-            const file64 = reader.result as string;
-            callBack(file64);
-        };
-        reader.readAsDataURL(file);
-    };
     const uploadHandler = (e: ChangeEvent<HTMLInputElement>): void => {
         if (e.target.files) {
             if (e.target.files.length) {
@@ -88,10 +78,6 @@ export const Player = () => {
                 fd.append('photo', file, file.name)
                 fd.append('user', user)
                 dispatch(uploadPhotoTC({photo: fd? fd.get('photo') : '', user: fd? fd.get('user') : ''}))
-
-                convertFileToBase64(file, (file64: string) => {
-                    setPhoto(file64)
-                });
             }
         }
     };

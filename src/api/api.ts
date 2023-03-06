@@ -27,8 +27,6 @@ const instanceDefault = axios.create({
         'Content-Type': 'application/json'
     },
 })
-const user_storage = localStorage.getItem('app-state')
-const user = JSON.parse(user_storage? user_storage : '').auth.me.username
 
 export const authAPI = {
     registration(data: RegistrationFormType) {
@@ -48,7 +46,7 @@ export const authAPI = {
     },
 }
 export const getAPI = {
-    getRole(role: string | undefined, first_name: string | undefined, second_name: string | undefined, patronymic: string | undefined) {
+    getRole(role: string | undefined, user: string | undefined) {
         return instance.get(`advanced/${role}/?search=${user}`)
     },
     getVideos() {
@@ -69,7 +67,7 @@ export const putAPI = {
     putPhoto(data: {photo: string, user: string}){
         return instancePhoto.put(`api/add/photo/${data.user}/`, data)
     },
-    putAdvance(role: string, data: AdvancePutFormType) {
+    putAdvance(role: string, data: AdvancePutFormType, user: string) {
         return instance.put<AdvanceFormType>(`advanced/${role}/${user}/`, data)
     },
 }

@@ -12,7 +12,7 @@ import {addVideoTC, uploadPhotoTC} from "../../store/bll/authReducer";
 import {advancePutTC, putPhotoTC} from "../../store/bll/putReducer";
 import Select, {OnChangeValue} from "react-select";
 import ReactPlayer from "react-player";
-import {api} from "../../../../api/api";
+import {api} from "../../api/api";
 
 type PositionsType = {
     value: number
@@ -20,15 +20,15 @@ type PositionsType = {
     isFixed?: boolean
 }
 
+
 export const Profile = () => {
+    const {role, username} = useParams()
     const [image, setImage] = useState<any>()
     const dispatch = useAppDispatch()
     const nav = useNavigate()
-    const user_storage = localStorage.getItem('app-state')
     const [page, setPage] = useState('profile')
-    const user = JSON.parse(user_storage? user_storage : '').auth.me.username
     useEffect(() => {
-        getAPI.getPhoto(user).then((e) => {setImage(e.data[0])}).catch(e => {
+        getAPI.getPhoto(username? username : '').then((e) => {setImage(e.data[0])}).catch(e => {
             if(e.status === 401){
                 return nav('/login')
             }
@@ -40,7 +40,7 @@ export const Profile = () => {
                 const file = e.target.files[0];
                 let fd = new FormData()
                 fd.append('photo', file, file.name)
-                fd.append('user', user)
+                fd.append('user', username? username : '')
                 dispatch(
                     !image ? uploadPhotoTC({photo: fd? fd.get('photo') : '', user: fd? fd.get('user') : ''}) : putPhotoTC({photo: fd? fd.get('photo') : '', user: fd? fd.get('user') : ''})
                 )
@@ -116,12 +116,10 @@ export const Profile = () => {
 
 
 export const MyProfile = () => {
-    const {role, first_name, second_name, patronymic} = useParams()
-    const user_storage = localStorage.getItem('app-state')
+    const {role, username} = useParams()
     const  [ roleData, setRoleData] = useState<AdvanceFormType>()
-    const user = JSON.parse(user_storage? user_storage : '').auth.me.username
     useEffect(() => {
-        getAPI.getRole(role, first_name, second_name, patronymic).then(e => setRoleData(e.data[0])).catch(e => {
+        getAPI.getRole(role, username).then(e => setRoleData(e.data[0])).catch(e => {
             if(e.status === 401){
                 return nav('/login')
             }
@@ -173,7 +171,7 @@ export const MyProfile = () => {
             },
 
             onSubmit: values => {
-                dispatch(advancePutTC({role: 'Player', data: {...values, leg, position}})).then(() => {return nav(`profile/${role}/${first_name}/${second_name}/${patronymic}`)})
+                dispatch(advancePutTC({role: 'Player', data: {...values, leg, position}, user: username? username : ''})).then(() => {return nav(`profile/${role}/${username}`)})
             },
         }
     )
@@ -370,7 +368,7 @@ export const MyProfile = () => {
 }
 
 export const MyVideo = () => {
-    const user = localStorage.getItem('app-state')
+    const {role, username} = useParams()
     const dispatch = useAppDispatch()
     const nav = useNavigate()
     const uploadHandler = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -379,7 +377,7 @@ export const MyVideo = () => {
                 const file = e.target.files[0];
                 let fd = new FormData()
                 fd.append('video', file, file.name)
-                fd.append('user', JSON.parse(!user ? '' : user).auth.me.username)
+                fd.append('user', !username ? '' : username)
                 dispatch(addVideoTC({video: fd? fd.get('video') : '', user: fd? fd.get('user') : ''}))
             }
         }
@@ -387,7 +385,7 @@ export const MyVideo = () => {
     const [video, setVideos] = useState<VideoType[]>()
     const [playing, setPlaying] = useState(false)
     useEffect(() => {
-        getAPI.getUserVideos(JSON.parse(!user ? '' : user).auth.me.username).then(e=> {
+        getAPI.getUserVideos(!username ? '' : username).then(e=> {
             console.log(e.data[0].video)
             setVideos(e.data)
         }).catch(e => {
@@ -427,11 +425,11 @@ export const MyVideo = () => {
 }
 
 export const MyPhotos = () => {
+    const {role, username} = useParams()
     const [photos, setPhotos] = useState<any>()
     const nav = useNavigate()
-    const user = localStorage.getItem('app-state')
     useEffect(() => {
-        getAPI.getPhoto(JSON.parse(!user ? '' : user).auth.me.username).then(e => {setPhotos(e)}).catch(e => {
+        getAPI.getPhoto(!username ? '' : username).then(e => {setPhotos(e)}).catch(e => {
             if(e.status === 401){
                 return nav('/login')
             }

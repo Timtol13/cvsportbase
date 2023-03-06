@@ -20,7 +20,7 @@ export const Main = () => {
                     <Route path='/login' element={<Login/>}/>
                     <Route path='/registration' element={<Registration/>}/>
                     <Route path='/advance/:role' element={<Advance/>}/>
-                    <Route path='/profile/:role/:login/' element={<Profile/>}/>
+                    <Route path='/profile/:role/:username/' element={<Profile/>}/>
                 </Routes>
                 <Modals/></div>
         </div>
