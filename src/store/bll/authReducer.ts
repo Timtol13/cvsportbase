@@ -5,8 +5,8 @@ import {handleError} from '../../utils/handleError'
 
 import {setAppStatus} from './appReducer'
 
-import {authAPI, putAPI} from '../../api/api'
-import {AdvanceFormType, AdvancePutFormType, RegistrationFormType} from "../../api/RequestType";
+import {authAPI} from '../../api/api'
+import {AdvanceFormType, RegistrationFormType} from "../../api/RequestType";
 
 //THUNKS
 export const registrationTC = createAsyncThunk(

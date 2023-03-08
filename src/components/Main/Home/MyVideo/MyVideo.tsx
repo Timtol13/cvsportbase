@@ -21,19 +21,22 @@ export const MyVideo = () => {
         )
     }, [])
     const [playing, setPlaying] = useState(false)
-    const videos = video?.map(vid => {
-        return (
-            <div className={styles.frame}>
-                <ReactPlayer url={`${vid?.video}`}
-                             playing={playing}
-                             width={310}
-                             height={'auto'}
-                             onMouseOver={()=>setPlaying(true)}
-                             onMouseOut={()=>setPlaying(false)}
-                />
-            </div>
-        )
-    })
+    let videos : any
+    if(video) {
+        videos = video?.map(vid => {
+            return (
+                <div className={styles.frame}>
+                    <ReactPlayer url={`${vid?.video}`} playing={playing}
+                                 width={310}
+                                 height={'auto'}
+                                 onMouseOver={() => setPlaying(true)}
+                                 onMouseOut={() => setPlaying(false)}
+                    />
+                </div>
+            )
+        })
+    }else {videos = ''}
+
     return (
         <div className={styles.video}>
             {videos? videos : ''}

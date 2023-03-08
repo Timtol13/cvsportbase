@@ -4,6 +4,7 @@ import {getAPI} from '../../api/api'
 import styles from './Profile.module.scss'
 import user_circle from '../../media/user/user_circle.svg'
 import video from '../../media/user/play_circle_outline.svg'
+import message from '../../media/user/comment.svg'
 import photos from '../../media/user/camera.png'
 import {AdvanceFormType, VideoType} from "../../api/RequestType";
 import {useFormik} from "formik";
@@ -13,6 +14,7 @@ import {advancePutTC, putPhotoTC} from "../../store/bll/putReducer";
 import Select, {OnChangeValue} from "react-select";
 import ReactPlayer from "react-player";
 import {api} from "../../api/api";
+import {Messenger} from "./Messenger/Messenger";
 
 type PositionsType = {
     value: number
@@ -28,11 +30,7 @@ export const Profile = () => {
     const nav = useNavigate()
     const [page, setPage] = useState('profile')
     useEffect(() => {
-        getAPI.getPhoto(username? username : '').then((e) => {setImage(e.data[0])}).catch(e => {
-            if(e.status === 401){
-                return nav('/login')
-            }
-        })
+        getAPI.getPhoto(username? username : '').then((e) => {setImage(e.data[0])})
     }, [])
     const uploadHandler = (e: ChangeEvent<HTMLInputElement>): void => {
         if (e.target.files) {
@@ -63,13 +61,10 @@ export const Profile = () => {
                         }}>Видео</a>
                     </li>
                     <li>
-                        <img src={photos} width={25} height={25} alt={''} /><a onClick={() => {
-                            setPage('photo')
-                        }}>Фото</a>
+                        <img src={message} /><a onClick={() => {
+                            setPage('messages')
+                        }}>Сообщения</a>
                     </li>
-                    {/*<li>*/}
-                    {/*    <img src={message} /><a onClick={() => {setPage('messages')}}>Сообщения</a>*/}
-                    {/*</li>*/}
                     {/*<li>*/}
                     {/*    <img src={settings} /><a onClick={() => {setPage('settings')}}>Настройки</a>*/}
                     {/*</li>*/}
@@ -100,14 +95,9 @@ export const Profile = () => {
                     <MyVideo />
                 </div>
             }
-            {page === 'photo' &&
-                <div>
-                    <MyPhotos />
-                </div>
-            }
             {page === 'messages' &&
                 <div>
-
+                    <Messenger />
                 </div>
             }
         </div>
@@ -371,6 +361,8 @@ export const MyVideo = () => {
     const {role, username} = useParams()
     const dispatch = useAppDispatch()
     const nav = useNavigate()
+    console.log(role)
+    console.log(username)
     const uploadHandler = (e: ChangeEvent<HTMLInputElement>): void => {
         if (e.target.files) {
             if (e.target.files.length) {
@@ -378,18 +370,18 @@ export const MyVideo = () => {
                 let fd = new FormData()
                 fd.append('video', file, file.name)
                 fd.append('user', !username ? '' : username)
-                dispatch(addVideoTC({video: fd? fd.get('video') : '', user: fd? fd.get('user') : ''}))
+                dispatch(addVideoTC({video: fd ? fd.get('video') : '', user: fd ? fd.get('user') : ''}))
             }
         }
     };
     const [video, setVideos] = useState<VideoType[]>()
     const [playing, setPlaying] = useState(false)
     useEffect(() => {
-        getAPI.getUserVideos(!username ? '' : username).then(e=> {
+        getAPI.getUserVideos(!username ? '' : username).then(e => {
             console.log(e.data[0].video)
             setVideos(e.data)
         }).catch(e => {
-            if(e.status === 401){
+            if (e.status === 401) {
                 return nav('/login')
             }
         })
@@ -398,9 +390,10 @@ export const MyVideo = () => {
         return (
             <div className={styles.frame}>
                 <ReactPlayer url={`${api}${vid?.video}`}
+                             controls={false}
                              playing={playing}
-                             onMouseOver={()=>setPlaying(true)}
-                             onMouseOut={()=>setPlaying(false)}
+                             onMouseOver={() => setPlaying(true)}
+                             onMouseOut={() => setPlaying(false)}
                 />
             </div>
         )
@@ -408,38 +401,18 @@ export const MyVideo = () => {
     return (
         <>
             <div className={styles.files}>
-                {videos? videos : ''}
+                {videos ? videos : ''}
                 <div className={styles.frame}>
-                <label className={styles.input_file} htmlFor="button-video">
-                    <span>Добавить видео</span>
-                    <input type="file"
-                           accept="video/*"
-                           onChange={uploadHandler}
-                           className={styles.files}
-                           id="button-video"/>
-                </label>
+                    <label className={styles.input_file} htmlFor="button-video">
+                        <span>Добавить видео</span>
+                        <input type="file"
+                               accept="video/*"
+                               onChange={uploadHandler}
+                               className={styles.files}
+                               id="button-video"/>
+                    </label>
                 </div>
             </div>
         </>
-    )
-}
-
-export const MyPhotos = () => {
-    const {role, username} = useParams()
-    const [photos, setPhotos] = useState<any>()
-    const nav = useNavigate()
-    useEffect(() => {
-        getAPI.getPhoto(!username ? '' : username).then(e => {setPhotos(e)}).catch(e => {
-            if(e.status === 401){
-                return nav('/login')
-            }
-        })
-    }, [])
-    return (
-        <div>
-            <div className={styles.ProfilePhoto}>
-                <img src={`${api}${photos?.photo}`} alt={'Wait'}/>
-            </div>
-        </div>
     )
 }

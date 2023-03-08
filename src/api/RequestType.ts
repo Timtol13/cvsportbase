@@ -1,5 +1,3 @@
-import * as string_decoder from "string_decoder";
-
 export type RegistrationFormType = {
     username: string,
     email: string,
@@ -59,5 +57,6 @@ export type VideoType = {
 }
 export type UserPhoto = {
     photo?: string,
-    user?: string
+    user?: string,
+    role? : string
 }

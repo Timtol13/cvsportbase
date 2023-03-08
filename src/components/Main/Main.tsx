@@ -8,6 +8,7 @@ import {Header} from "../Header";
 import {Modals} from "../Modal/Modals";
 import {Home} from "./Home/Home";
 import styles from "./Main.module.scss";
+import {Chat} from "../Profile/Messenger/Chat/Chat";
 
 export const Main = () => {
     return (
@@ -21,6 +22,7 @@ export const Main = () => {
                     <Route path='/registration' element={<Registration/>}/>
                     <Route path='/advance/:role' element={<Advance/>}/>
                     <Route path='/profile/:role/:username/' element={<Profile/>}/>
+                    <Route path='chat/:companion' element={<Chat/>}/>
                 </Routes>
                 <Modals/></div>
         </div>

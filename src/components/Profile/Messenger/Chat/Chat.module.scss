@@ -1,0 +1,15 @@
+.window{
+  width: 60%;
+  height: 100%;
+  color: #fff;
+  margin-right: auto;
+  font-weight: bolder;
+  margin-left: auto;
+  .head{
+    height: 50px;
+    display: flex;
+    .flexible{
+      flex: 1 1 0;
+    }
+  }
+}

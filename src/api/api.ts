@@ -2,7 +2,7 @@ import axios from "axios";
 import {AdvanceFormType, AdvancePutFormType, RegistrationFormType} from "./RequestType";
 
 let token = localStorage.getItem('app-state')
-export const api = 'http://127.0.0.1:8000/'
+export const api = 'http://127.0.0.1:8000'
 const instance = axios.create({
     baseURL: `${api}api/`,
     withCredentials: true,
@@ -30,45 +30,45 @@ const instanceDefault = axios.create({
 
 export const authAPI = {
     registration(data: RegistrationFormType) {
-        return instanceDefault.post(`registration/`, data)
+        return instanceDefault.post(`/registration/`, data)
     },
     photoUpload(data: {photo: string, user: string}){
-        return instancePhoto.post(`api/add/photo/${data.user}/`, data)
+        return instancePhoto.post(`/api/add/photo/${data.user}/`, data)
     },
     videoUpload(data: {video: string, user: string}){
-        return instancePhoto.post(`api/add/video/${data.user}/`, data)
+        return instancePhoto.post(`/api/add/video/${data.user}/`, data)
     },
     login(data: { username: string, password: string }) {
-        return instanceDefault.post(`${api}login/`, data)
+        return instanceDefault.post(`/login/`, data)
     },
     advance(role: string, data: AdvanceFormType) {
-        return instance.post<AdvanceFormType>(`advanced/${role}/`, data)
+        return instance.post<AdvanceFormType>(`/advanced/${role}/`, data)
     },
 }
 export const getAPI = {
     getRole(role: string | undefined, user: string | undefined) {
-        return instance.get(`advanced/${role}/?search=${user}`)
+        return instance.get(`/advanced/${role}/?search=${user}`)
     },
     getVideos() {
-        return instance.get('add/video/')
+        return instancePhoto.get('/add/video/')
     },
-    getUserVideos(user : any) {
-        return instance.get(`add/video/${user}`)
+    getUserVideos(user : string) {
+        return instancePhoto.get(`/api/add/video/${user}`)
     },
      getPhoto(user: string){
-        return instancePhoto.get(`api/add/photo/${user}/`)
+        return instancePhoto.get(`/api/add/photo/${user}/`)
     },
     getUsersPhoto(){
-        return instancePhoto.get(`api/add/photo/`)
+        return instancePhoto.get(`/api/add/photo/`)
     }
 }
 
 export const putAPI = {
     putPhoto(data: {photo: string, user: string}){
-        return instancePhoto.put(`api/add/photo/${data.user}/`, data)
+        return instancePhoto.put(`/api/add/photo/${data.user}/`, data)
     },
     putAdvance(role: string, data: AdvancePutFormType, user: string) {
-        return instance.put<AdvanceFormType>(`advanced/${role}/${user}/`, data)
+        return instance.put<AdvanceFormType>(`/advanced/${role}/${user}/`, data)
     },
 }
 
